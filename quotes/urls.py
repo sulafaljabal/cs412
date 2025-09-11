@@ -1,6 +1,6 @@
 # file: quotes/urls.py
 # Sulaf Al Jabal (sulafaj@bu.edu) 09/09/25
-# Description: URL patterns for the quotes app. Contains 4 paths: home, about, quote of the 
+# Description: URL patterns for the quotes app. Contains 4 paths: '', 'about', 'quote', and 'show_all'
 # day, and show all quotes.
 
 

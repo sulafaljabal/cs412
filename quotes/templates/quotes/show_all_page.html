@@ -1,14 +1,19 @@
+<!--quotes/templates/quotes/show_all_page.html
+Sulaf Al Jabal (sulafaj@bu.edu) 09/09/2025
+Description template for show_all_page.html, shows all quotes and images of the artist-->
+
 {% extends 'quotes/base.html' %}
+
 
 {% block content %}
     <h2>All quotes by Rex Orange County</h2>
-    {% for quote in quotes %}
-        <p>{{ quote }}</p> {# Transforms item to uppercase #}
+    {% for quote in quotes %} <!--for loop going through all quotes-->
+        <p>{{ quote }}</p> 
     {% endfor %}
     
     <h2>All images of Rex Orange County</h2>
 
-    {% for image in images %}
+    {% for image in images %} <!-- for loop going through all images-->
         <img src={{image}} alt="Image of Rex Orange County" width="500px" height="auto">
         <br>
     {% endfor %}
