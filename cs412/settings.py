@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hw',
-    'quotes',
+    "hw",
+    "quotes",
 ]
 
 MIDDLEWARE = [
@@ -127,7 +127,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # declarations to reference static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #STATIC_URL = 'static/'
-STATICFILES_DIR = [
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_DIR = "media/"# note: no leading path
+
+import socket
+CS_DEPLOYMENT_HOSTNAME = 'cs-webpapps.bu.edu'
+
+if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
+    STATIC_URL = '/sulafaj/static/'
+    MEDIA_URL = '/sulafaj/media'
 

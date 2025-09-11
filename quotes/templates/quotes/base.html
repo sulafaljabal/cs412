@@ -12,19 +12,21 @@ Description: base template for Rex Orange County quote of the day application
         <link rel="stylesheet" href="{% static 'quotes/styles.css' %}">  
     </head>
     <body>
-        <h1>Rex Orange County Quote of the Day</h1>
+        <h1>Rex Orange County Quote of the Day</h1> 
+        <!-- Navigation bar of website -->
         <nav>
-            <li> <a href="{% url 'home_page' %}">Home</a></li>
             <li> <a href="{% url 'about_page' %}">About</a></li>
-            <li> <a href="{% url 'quote_OTD_page' %}">Quote of the day</a> </li>
+            <li> <a href="{% url 'quote_page' %}">Quote of the day</a> </li>
             <li> <a href="{% url 'show_all_page' %}">Show all quotes</a></li>
         </nav>
 
         <!-- put page specific content here -->
+         <main>
          {% block content %}
          {% endblock %}
+            </main>
 
-        <footer>
+        <footer> 
             Page created by sulafaj@bu.edu <br>
             Page generated at: {{time}}. <br>
         </footer>
