@@ -1,0 +1,32 @@
+<!--quotes/templates/base.html
+Sulaf Al Jabal (sulafaj@bu.edu) 09/09/2025
+Description: base template for Rex Orange County quote of the day application
+-->
+
+{% load static %}
+<html>
+    <head>
+        <title>
+            Rex Orange County Quote of the day
+        </title>
+        <link rel="stylesheet" href="{% static 'quotes/styles.css' %}">  
+    </head>
+    <body>
+        <h1>Rex Orange County Quote of the Day</h1>
+        <nav>
+            <li> <a href="{% url 'home_page' %}">Home</a></li>
+            <li> <a href="{% url 'about_page' %}">About</a></li>
+            <li> <a href="{% url 'quote_OTD_page' %}">Quote of the day</a> </li>
+            <li> <a href="{% url 'show_all_page' %}">Show all quotes</a></li>
+        </nav>
+
+        <!-- put page specific content here -->
+         {% block content %}
+         {% endblock %}
+
+        <footer>
+            Page created by sulafaj@bu.edu <br>
+            Page generated at: {{time}}. <br>
+        </footer>
+    </body>
+</html>
