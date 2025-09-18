@@ -1,0 +1,40 @@
+<!-- templates/restaurant/main.html
+ Sulaf Al Jabal (sulafaj@bu.edu) 09/16/25
+ Description: html file for the confirmation page of the restaurant application, 
+ content here fed into base.html file
+ -->
+
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+        <h2>Confirmation!</h2>
+
+        <p>
+            Thank you for your order <br>
+            Your order will be ready at: {{order_time}}
+        </p>
+
+        <h3>
+            Your order is confirmed:
+        </h3>
+
+        {% for item in selected_menu_items.keys %} <!--Iterating through user's food choices-->
+            <p>- {{item}}</p> 
+        {% endfor %}
+
+        <h3>Special Instructions:</h3>
+        <p>
+            {{special_instructions}}
+        </p>
+
+        <h4>
+            Total Price: ${{total_price}}
+        </h4>
+        <br>
+        <h3>
+            Customer Information:
+        </h3>
+        <p>
+            {{name}} <br> {{email}} <br> {{phone}}
+        </p>
+{% endblock %}

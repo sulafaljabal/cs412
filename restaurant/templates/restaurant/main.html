@@ -1,0 +1,68 @@
+<!-- templates/restaurant/main.html
+ Sulaf Al Jabal (sulafaj@bu.edu) 09/16/25
+ Description: html file for the main page of the restaurant application, 
+ content here fed into base.html file
+ # http://farm6.staticflickr.com/5519/10419588133_fce1ee6637_c.jpg-->
+
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+        <h2>Welcome!</h2>
+        <p>
+            Welcome to Burgerland Bahrain! Here you can enjoy a variety of food options such as burgers, shawarmas, fries, grills, 
+            rice boxes and so much more! We also offer a variety of soft drinks and desserts. <br>Catering options are also available 
+            for any occasion. <br>
+            <h4>We have multiple branches across the Kingdom of Bahrain: </h4>
+            <li>Budaiya</li>
+            <li>Adliya</li>
+            <li>Busaiteen</li>
+            <li>Tubli</li>
+            <li>Isa Town</li>
+            <li>Riffa</li>
+            <li>Al Hajiyat</li>
+            <li>Lebanon Land</li>
+            <li>Amwaj</li>
+        </p> <br>
+        <p>
+            Our hours of operation are:
+            <div id=" div_table_wrapper">
+                <table>
+                <tr>
+                    <th>Day</th>
+                    <th>Time</th>
+                </tr>
+                <tr>
+                    <td>Sunday</td>
+                    <td>12:30 - 01:30</td>
+                </tr>
+                <tr>
+                    <td>Monday</td>
+                    <td>12:30 - 01:30</td>
+                </tr>
+                <tr>
+                    <td>Tuesday</td>
+                    <td>12:30 - 01:30</td>
+                </tr>
+                <tr>
+                    <td>Wednesday</td>
+                    <td>12:30 - 01:30</td>
+                </tr>
+                <tr>
+                    <td>Thursday</td>
+                    <td>12:30 - 02:00</td>
+                </tr>
+                <tr>
+                    <td>Friday</td>
+                    <td>12:30 - 02:00</td>
+                </tr>
+                <tr>
+                    <td>Saturday</td>
+                    <td>12:30 - 02:00</td>
+                </tr>
+                </table>
+                </div>
+
+        </p>
+        <img src={{image}} alt="Burgerland, Budaiya location" width="400px" height="auto">
+
+{% endblock %}

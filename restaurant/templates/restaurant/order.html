@@ -1,0 +1,57 @@
+<!-- templates/restaurant/order.html
+ Sulaf Al Jabal (sulafaj@bu.edu) 09/16/25
+ Description: order template, showcases various food offerings to users.
+ Users will be able to select food and confirm their order. Users sent to a confirmation page 
+ after successfully submitting their orders.-->
+
+
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+    <form action="{% url 'submit' %}" method="POST">
+        {% csrf_token %}
+
+        <h3>Select your food item(s):</h3>
+        <div><input type="checkbox" name="chicken_shawarma" value = "Chicken Shawarma">Chicken Shawarma $3</div>
+        <div><input type="checkbox" name="beef_shawarma" value = "Beef Shawarma">Beef Shawarma $3.5</div>
+        <div><input type="checkbox" name="beef_chicken_shawarma" value = "Beef and Chicken Shawarma">Beef and Chicken Shawarma $6</div>     
+        <div><input type="checkbox" name="french_fries" value = "French Fries">French Fries $2</div>   
+
+        <br>
+
+        <h3>Select your drink(s):</h3>
+        <div><input type="checkbox" name="seven_up" value = "7UP">7up $1</div>
+        <div><input type="checkbox" name="pepsi" value = "Pepsi">Pepsi $1</div>
+        <div><input type="checkbox" name="fanta_orange" value = "Fanta Orange">Fanta Orange $1</div>     
+        <div><input type="checkbox" name="fanta_lemon" value = "Fanta Lemon">Fanta Lemon $1</div>    
+        <div><input type="checkbox" name="coffee" value = "Coffee">Coffee $2</div>    
+
+        <br>
+
+        <h3>Today's Special:</h3>
+        <div><input type="checkbox" name="special" value = {{special_item}}>{{special_item_name}} ${{special_price}}</div>
+
+        <br>
+        
+        <h3>Special Instructions</h3>
+        Please share any special instructions:
+        <div><textarea name="special_instructions" rows="3" cols="60"></textarea></div>
+
+        <br>
+        
+        <h3>Customer Information</h3>
+
+        <div>Name:</div> <div><input name="name"></div>
+        <div>Phone:</div> <div><input name="phone"></div>
+
+        <div>Email:</div> <div><input name="email"></div>
+
+        <br>
+
+        <h3>Place your order!</h3>
+        <input type="submit">       
+        
+        <br> <br>
+
+    </form>
+{% endblock %}

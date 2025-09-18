@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "hw",
     "quotes",
+    "formdata",
+    "restaurant",
 ]
 
 MIDDLEWARE = [
@@ -126,7 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # declarations to reference static files
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#STATIC_URL = 'static/'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]

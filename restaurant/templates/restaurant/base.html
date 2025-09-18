@@ -1,0 +1,38 @@
+<!-- templates/restaurant/base.html
+ Sulaf Al Jabal (sulafaj@bu.edu) 09/16/25
+ Description: base html file for restaurant application
+ -->
+
+{% load static %}
+
+<html>
+    <head>
+        <title>
+            Burgerland Bahrain
+        </title>
+        <link rel="stylesheet" href="{% static 'restaurant/styles.css' %}">  
+    </head>
+    <body>
+        <div id="main_wrapper" > 
+            <h1>
+                Burgerland Bahrain
+            </h1>
+
+            <nav>
+                <ul>
+                    <li> <a href="{% url 'main_page' %}">Home</a></li>
+                    <li> <a href="{% url 'order_page' %}">Order</a></li>
+                </ul>
+            </nav>
+
+            <!-- put page specific content here -->
+                {% block content %}
+                {% endblock %}
+
+            <footer>
+                Page created by sulafaj@bu.edu <br>
+                Generated at: {{time}}. <br>
+            </footer>
+        </div>
+    </body>
+</html>
