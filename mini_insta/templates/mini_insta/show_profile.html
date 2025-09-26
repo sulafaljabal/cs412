@@ -5,8 +5,8 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-<h1>@{{profile.username}}</h1>
 
+<h1>@{{profile.username}}</h1>
 
 <main class="grid-container">
 <!--scriplet code going through all articles-->
@@ -23,14 +23,17 @@
 
         <img src="{{profile.profile_image_url}}" alt="">
     </profile>
-    <h4 id = "post_num">
-        TBD posts
-    </h4>   
-    <h4 id = "followers">
-        TBD followers
-    </h4>
-    <h4 id = "following">
-        TBD Following
-    </h4>    
+    <div id = "profile-info">
+        <h4 id = "post_num">
+            TBD posts
+        </h4>   
+        <h4 id = "followers">
+            TBD followers
+        </h4>
+        <h4 id = "following">
+            TBD Following
+        </h4>
+    </div>    
 </main>
+
 {% endblock %}

@@ -6,30 +6,23 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
-<h1>All profiles</h1>
-
+<h1>Mini Insta: All profiles</h1>
 
  <main class="grid-container">
-    <!--scriplet code going through all articles-->
+    <!--scriplet code going through all profiles-->
     {% for profile in profiles %}
-        <article>
+        <profile>
             <div>
-                <h2>
-                    {{profile.display_name}}
-                </h2>
                 <h3>
-                    {{profile.username}}
+                    @{{profile.username}}
                 </h3>
-                <p>
-                    {{profile.bio_text}}
-                </p>
             </div>
             
-            <a href = "{% url 'show_profile' profile.pk %}">
-            <img src="{{profile.profile_image_url}}" alt="">
+            <a href = "{% url 'show_profile' profile.pk %}"> <!--Link to each individual user's page-->
+                <img src="{{profile.profile_image_url}}" alt="" width="200">
             </a>
-        </article>
-        <hr>
+
+        </profile>
     {% endfor %}
     </main>
 

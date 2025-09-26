@@ -5,18 +5,22 @@
 {% load static %}
 
 <html>
+
     <head>
         <title>Mini Instagram</title>
         <link rel="stylesheet"  href="{% static 'mini_insta/styles.css' %}">
-
     </head>
+
     <body>
-        {% block content %}
+
+        {% block content %} <!--Insert page specific content here-->
         {% endblock %}
+
         <footer>
             <nav>
-                <ul><li><a href = "{% url 'show_all_profiles' %}">Home Page</a></li></ul>
+                <ul><li><a href = "{% url 'show_all_profiles' %}">Home Page</a></li></ul> <!--Footer lets users go back to home page-->
             </nav>
         </footer>
+
     </body>
 </html>
