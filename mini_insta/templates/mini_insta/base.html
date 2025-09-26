@@ -1,0 +1,22 @@
+<!-- templates/mini_insta/base.html
+ Sulaf AL Jabal (sulafaj@bu.edu) 09/24/25
+ Description: base html template for all pages on mini_insta
+ application-->
+{% load static %}
+
+<html>
+    <head>
+        <title>Mini Instagram</title>
+        <link rel="stylesheet"  href="{% static 'mini_insta/styles.css' %}">
+
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+        <footer>
+            <nav>
+                <ul><li><a href = "{% url 'show_all_profiles' %}">Home Page</a></li></ul>
+            </nav>
+        </footer>
+    </body>
+</html>

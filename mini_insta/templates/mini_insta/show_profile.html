@@ -1,0 +1,36 @@
+<!-- mini_article/profile.html
+ Sulaf Al Jabal (sulafaj@bu.edu) 09/25/25
+ Description: html file for displaying individual profile-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>@{{profile.username}}</h1>
+
+
+<main class="grid-container">
+<!--scriplet code going through all articles-->
+    <profile>
+        <div>
+            <h2>
+                {{profile.display_name}}
+            </h2>
+
+            <p>
+                {{profile.bio_text}}
+            </p>
+        </div>
+
+        <img src="{{profile.profile_image_url}}" alt="">
+    </profile>
+    <h4 id = "post_num">
+        TBD posts
+    </h4>   
+    <h4 id = "followers">
+        TBD followers
+    </h4>
+    <h4 id = "following">
+        TBD Following
+    </h4>    
+</main>
+{% endblock %}

@@ -1,0 +1,36 @@
+<!-- templates/mini_insta/show_all_profiles.html
+ Sulaf AL Jabal (sulafaj@bu.edu) 09/24/25
+ Description: html template responsible for showing all profiles in
+ this mini instagram application-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>All profiles</h1>
+
+
+ <main class="grid-container">
+    <!--scriplet code going through all articles-->
+    {% for profile in profiles %}
+        <article>
+            <div>
+                <h2>
+                    {{profile.display_name}}
+                </h2>
+                <h3>
+                    {{profile.username}}
+                </h3>
+                <p>
+                    {{profile.bio_text}}
+                </p>
+            </div>
+            
+            <a href = "{% url 'show_profile' profile.pk %}">
+            <img src="{{profile.profile_image_url}}" alt="">
+            </a>
+        </article>
+        <hr>
+    {% endfor %}
+    </main>
+
+ {% endblock %}

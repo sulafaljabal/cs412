@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "quotes",
     "formdata",
     "restaurant",
+    "blog",
+    "mini_insta",
 ]
 
 MIDDLEWARE = [

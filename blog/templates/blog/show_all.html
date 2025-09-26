@@ -1,0 +1,32 @@
+<!-- blog/show_all.html-->
+
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h1>Showing all articles</h1>
+
+
+ <main class="grid-container">
+    <!--scriplet code going through all articles-->
+    {% for article in articles %}
+        <article>
+            <div>
+                <h2>
+                    {{article.title}}
+                </h2>
+                <h3>
+                    By {{article.author}}
+                </h3>
+                <p>
+                    {{article.text}}
+                </p>
+            </div>
+            
+            <a href = "{% url 'article' article.pk %}">
+            <img src="{{article.image_url}}" alt="">
+        </article>
+        <hr>
+    {% endfor %}
+    </main>
+
+ {% endblock %}

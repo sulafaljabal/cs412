@@ -1,0 +1,29 @@
+<!-- blog/article.html-->
+
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h1>{{article.title}}</h1>
+
+
+ <main class="grid-container">
+    <!--scriplet code going through all articles-->
+        <article>
+            <div>
+                <h2>
+                    {{article.title}}
+                </h2>
+                <h3>
+                    By {{article.author}}
+                </h3>
+                <p>
+                    {{article.text}}
+                </p>
+            </div>
+            
+
+            <img src="{{article.image_url}}" alt="">
+        </article>
+    </main>
+
+ {% endblock %}
