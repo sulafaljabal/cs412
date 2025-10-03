@@ -5,5 +5,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Profile
+from .models import * # Profile, Photo, Post
 admin.site.register(Profile) # registering Profile model
+admin.site.register(Photo) # registering Photo model
+admin.site.register(Post) # registering Post model

@@ -1,4 +1,4 @@
-<!-- mini_article/profile.html
+<!-- mini_insta/show_profile.html
  Sulaf Al Jabal (sulafaj@bu.edu) 09/25/25
  Description: html file for displaying individual profile-->
 
@@ -17,15 +17,18 @@
             </h2>
 
             <p>
-                {{profile.bio_text}}
+                {{profile.bio_text}} <br>
+                Joined on: {{profile.join_date}}
             </p>
         </div>
 
         <img src="{{profile.profile_image_url}}" alt="">
     </profile>
+
     <div id = "profile-info">
         <h4 id = "post_num">
-            TBD posts
+            <strong>Posts</strong>
+            {{profile.get_all_posts.count}}
         </h4>   
         <h4 id = "followers">
             TBD followers
@@ -33,7 +36,19 @@
         <h4 id = "following">
             TBD Following
         </h4>
-    </div>    
+    </div>  
+    <div>
+        <h3>All posts by {{profile.display_name}}</h3>
+        <post>
+            {% for post in profile.get_all_posts %}
+                <img src="{{post.get_all_photos.first.image_url}}" alt="No photo available..." width="400"> <br>
+                <p>
+                    {{post.caption}} <br>
+                    Post uploaded: {{post.timestamp}} <br>
+                </p>
+            {% endfor %}
+        </post>
+    </div>  
 </main>
 
 {% endblock %}

@@ -1,0 +1,19 @@
+<!-- blog/create_article_form.html
+ dipslay the HT<L form to create a new Article object-->
+
+
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>Create a new Article</h1>
+    <!-- display the HTML form-->
+    <form action = "{% url 'create_article' %}" method = "POST">
+        {% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+
+        <input type="submit" name="submit" value="submit">
+    </form>
+
+{% endblock %}

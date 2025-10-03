@@ -10,23 +10,24 @@
     <!--scriplet code going through all articles-->
     {% for article in articles %}
         <article>
-            <div>
-                <h2>
-                    {{article.title}}
-                </h2>
-                <h3>
-                    By {{article.author}}
-                </h3>
-                <p>
-                    {{article.text}}
-                </p>
-            </div>
-            
             <a href = "{% url 'article' article.pk %}">
-            <img src="{{article.image_url}}" alt="">
+                <div>
+
+                        <h2>
+                            {{article.title}}
+                        </h2>
+                        <h3>
+                            By {{article.author}}
+                        </h3>
+                        <p>
+                            {{article.text}}
+                        </p>
+                </div>
+                
+                <img src="{{article.image_url}}" alt="">
+            </a>
         </article>
-        <hr>
     {% endfor %}
     </main>
 
- {% endblock %}
+{% endblock %}
