@@ -18,8 +18,9 @@
 
             <p>
                 {{profile.bio_text}} <br>
-                Joined on: {{profile.join_date}}
-            </p>
+                Joined on: {{profile.join_date}} <br>
+            </p> 
+            <h3><a href = "{% url 'create_post' profile.pk %}">Create a post for {{profile.display_name}}</a></h3>
         </div>
 
         <img src="{{profile.profile_image_url}}" alt="">
@@ -27,7 +28,7 @@
 
     <div id = "profile-info">
         <h4 id = "post_num">
-            <strong>Posts</strong>
+            Posts
             {{profile.get_all_posts.count}}
         </h4>   
         <h4 id = "followers">
@@ -43,11 +44,12 @@
             {% for post in profile.get_all_posts %}
                 <img src="{{post.get_all_photos.first.image_url}}" alt="No photo available..." width="400"> <br>
                 <p>
-                    {{post.caption}} <br>
-                    Post uploaded: {{post.timestamp}} <br>
+                    "    {{post.caption}}    " <br>
+                    Uploaded: {{post.timestamp}} <br>
                 </p>
             {% endfor %}
         </post>
+
     </div>  
 </main>
 

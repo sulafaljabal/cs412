@@ -5,9 +5,8 @@
 from django.db import models
 
 class Profile(models.Model): # instances of users Profiles
-    """ Encapsulate the data of a mini_insta Profile. Contains user's username, display name, profile picture, join date and some biographical information."""
-
-    # define data attribute of the Profile object
+    """ Encapsulate the data of a mini_insta Profile. Contains user's username, display name, 
+    profile picture, join date and some biographical information."""
 
     username = models.TextField(blank=True) 
     display_name = models.TextField(blank=True)
@@ -23,7 +22,7 @@ class Profile(models.Model): # instances of users Profiles
     def get_all_posts(self):
         """returns all of the posts on this profile"""
 
-        posts = Post.objects.filter(profile=self) # figure out way to order posts by timestamp
+        posts = Post.objects.filter(profile=self) 
         return posts 
     #enddef
 
