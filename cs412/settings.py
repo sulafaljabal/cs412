@@ -136,7 +136,7 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_DIR = "media/"# note: no leading path
+MEDIA_URL = "media/"# note: no leading path
 
 import socket
 CS_DEPLOYMENT_HOSTNAME = 'cs-webpapps.bu.edu'
