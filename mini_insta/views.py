@@ -99,26 +99,24 @@ class DeletePostView(DeleteView):
     model = Post 
     context_object_name = 'post'
 
+    def get_context_data(self, **kwargs):
+        """Adding post to template context"""
+        
+        context = super().get_context_data(**kwargs)
+        context['profile'] = self.object.profile
+        context['post'] = self.object
+
+        return context
+    #enddef
+
     def get_success_url(self):
         """Return the URL which we redirect the browser to after successfully
         deleting a Post """
 
-        pk = self.kwargs.get("pk")
-        post = Post.objects.get(pk=pk) # getting post
-
-        profile = post.Profile # getting profile via post field
+        profile = self.object.profile # getting profile via post field
         
         # redirect user to the profile of the user after the post has been deleted
-        return reverse('profile', kwargs={'pk': profile.pk})
-    #enddef
-
-    def form_valid(self):
-        """This method handles form submission and deletes the Post object from the Django database
-        """
-
-        pk = self.kwargs['pk'] #primary key of the post object
-        profile = Profile.objects.get(pk=pk) # getting profile connected to post needing to be deleted
-
+        return reverse('show_profile', kwargs={'pk': profile.pk})
     #enddef
 #end class DeletePost View
 
@@ -159,4 +157,32 @@ class UpdatePostView(UpdateView):
 
         return super().form_valid(form)
     #enddef
+
+    def get_success_url(self) -> str:
+        """Return the URL to redirect to after successfully updating a Profile."""
+
+    
+        return reverse('show_post', kwargs={'pk': self.object.pk})
+    #enddef
+    def get_context_data(self, **kwargs):
+        """return the dictionary of context variables for use in the template"""
+
+        # Calling the superclass method 
+        context = super().get_context_data(**kwargs)
+
+        # pk = self.kwargs['pk']
+        profile = self.object.profile
+
+        context['profile'] = profile 
+        return context 
+    #enddef
 #end class UpdatePostView
+
+class PostDetailView(DetailView):
+    """Shows an instance of a Post tied to a certain Profile object"""
+
+    context_object_name = 'post'
+    model = Post 
+    template_name = "mini_insta/show_post.html"
+
+#endclass

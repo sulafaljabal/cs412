@@ -1,0 +1,30 @@
+<!-- /templates/mini_insta/delete_post_form.html 
+    Sulaf Al Jabal (sulafaj@bu.edu) 10/09/2025
+    File description: HTML template used to ask user if they're sure about
+    deleting a post tied to a certain profile object-->
+{% extends 'mini_insta/base.html' %}
+ 
+{% block content %}
+ 
+<h3>Are you sure you want to delete this post?</h3>
+<h3>@{{post.profile.username}}</h3>
+<h4>Posted on: {{post.timestamp}}</h4>
+<h4>"    {{post.caption}}    "</h4>
+{% for photo in post.get_all_photos %}
+    <img src="{{photo.get_image_url}}" alt="No photo available..." width="400"><br>
+{% endfor %}
+
+ 
+ 
+<form method='POST'>
+    {% csrf_token %}
+    <input type='submit' value="Delete">
+</form>
+
+<form action = "{% url 'show_profile' profile.pk %}" method="GET">
+    {% csrf_token %}
+    <input type='submit' value="Cancel">
+</form>
+ 
+{% endblock %}
+ 

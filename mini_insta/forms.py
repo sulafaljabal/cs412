@@ -21,7 +21,7 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         """Associate the form with a model from our db"""
         model = Profile 
-        fields = ['profile_image_file', 'display_name', 'bio_text'] # cant change username or joindate
+        fields = ['profile_image_url', 'display_name', 'bio_text'] # cant change username or joindate
 
     #endMeta
 #end class UpdateProfileForm

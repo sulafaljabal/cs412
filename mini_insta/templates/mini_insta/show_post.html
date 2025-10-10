@@ -1,0 +1,40 @@
+<!-- mini_insta/show_post.html
+ Sulaf Al Jabal (sulafaj@bu.edu) 10/09/2025
+ Description: html file for displaying individual post tied to a 
+ certain profile-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+
+<h1>Post by {{post.profile.display_name}}</h1>
+
+<main class="grid-container">
+    <div>
+        <p>
+            {{post.profile.bio_text}} <br>
+        </p>
+    </div>
+
+    <div>
+        <p>
+            "     {{post.caption}}    " <br>
+            Uploaded at: {{post.timestamp}}
+        </p>
+        <div>
+            <!--Update and delete buttons for post -->
+            <button type="button"><a href = "{% url 'update_post' post.pk %}">Update this post</a></button><br>
+            <button type="button"><a href ="{% url 'delete_post' post.pk %}">Delete this post</a></button>
+
+        </div>
+        {% for photo in post.get_all_photos %}
+            {% if photo %}
+                <img src="{{ photo.get_image_url }}" alt="No photo available..." width="400"> <br>
+            {% else %}
+                <img src="No photo available" alt="No photo available..." width="400"> <br>
+            {% endif %}
+        {% endfor %}
+    </div>
+</main>
+
+{% endblock %}

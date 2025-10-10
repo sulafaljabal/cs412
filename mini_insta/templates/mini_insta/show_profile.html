@@ -6,23 +6,19 @@
 
 {% block content %}
 
-<h1>@{{profile.username}}</h1>
+<h1>@{{profile.username}} <br>{{profile.display_name}}</h1>
 
 <main class="grid-container">
 <!--scriplet code going through all articles-->
     <profile>
         <div>
-            <h2>
-                {{profile.display_name}}
-            </h2>
-
             <p>
                 {{profile.bio_text}} <br>
                 Joined on: {{profile.join_date}} <br>
             </p> 
-            <h3><a href = "{% url 'create_post' profile.pk %}">Create a post for {{profile.display_name}}</a></h3>
-            <!--Update this article-->
-            <h3><a href="{% url 'update_profile' profile.pk %}">Update this profile</a></h3>
+            <button type="button"><h3><a href = "{% url 'create_post' profile.pk %}">Create a post for {{profile.display_name}}</a></h3></button>
+            <br>
+            <button type="button"><h3><a href="{% url 'update_profile' profile.pk %}">Update this profile</a></h3></button>
         </div>
 
         <img src="{{profile.get_profile_image}}" alt="No image available">
@@ -44,19 +40,20 @@
         <h3>All posts by {{profile.display_name}}</h3>
         <post>
             {% for post in profile.get_all_posts %}
-                {% with first_photo=post.get_all_photos|first %}
-                    {% if first_photo %}
-                        <img src="{{ first_photo.get_image_url }}" alt="No photo available..." width="400"> <br>
-                    {% else %}
-                        <img src="no photo available..." alt="No photo available..." width="400"> <br>
-                    {% endif %}
-                {% endwith %}
-                <p>
-                    "    {{post.caption}}    " <br>
-                    Uploaded: {{post.timestamp}} <br>
-                </p>
-                <!--Update post-->
-                <p><a href = "{% url 'update_post' post.pk %}">Update this post</a></p>
+                <a href="{% url 'show_post' post.pk %}">
+                    {% with first_photo=post.get_all_photos|first %}
+                        {% if first_photo %}
+                            <img src="{{ first_photo.get_image_url }}" alt="No photo available..." width="400"> <br>
+                        {% else %}
+                            <img src="no photo available..." alt="No photo available..." width="400"> <br>
+                        {% endif %}
+                    {% endwith %}
+                    <p>
+                        "    {{post.caption}}    " <br>
+                        Uploaded: {{post.timestamp}} <br>
+                    </p>
+
+                </a>
 
             {% endfor %}
         </post>
