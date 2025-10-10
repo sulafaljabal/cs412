@@ -17,8 +17,10 @@
             Input image(s): <input type="file" multiple name="image_file"> <br>
             <input type="submit" name="submit" value="submit"> <br>
     </form>
+
     <form action ="{% url 'show_profile' profile.pk %}" method ="GET">
         <input type="submit" value = "Cancel">
     </form>
+    
 </main>
 {% endblock %}

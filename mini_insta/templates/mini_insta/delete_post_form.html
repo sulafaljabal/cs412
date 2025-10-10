@@ -14,8 +14,6 @@
     <img src="{{photo.get_image_url}}" alt="No photo available..." width="400"><br>
 {% endfor %}
 
- 
- 
 <form method='POST'>
     {% csrf_token %}
     <input type='submit' value="Delete">
