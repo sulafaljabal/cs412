@@ -144,6 +144,4 @@ CS_DEPLOYMENT_HOSTNAME = 'cs-webpapps.bu.edu'
 if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
     STATIC_URL = '/sulafaj/static/'
     MEDIA_URL = '/sulafaj/media/'
-else:
-    MEDIA_URL = '/media/'
 
