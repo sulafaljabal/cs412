@@ -21,9 +21,11 @@
                 Joined on: {{profile.join_date}} <br>
             </p> 
             <h3><a href = "{% url 'create_post' profile.pk %}">Create a post for {{profile.display_name}}</a></h3>
+            <!--Update this article-->
+            <h3><a href="{% url 'update_profile' profile.pk %}">Update this profile</a></h3>
         </div>
 
-        <img src="{{profile.profile_image_url}}" alt="">
+        <img src="{{profile.get_profile_image}}" alt="No image available">
     </profile>
 
     <div id = "profile-info">
@@ -42,11 +44,20 @@
         <h3>All posts by {{profile.display_name}}</h3>
         <post>
             {% for post in profile.get_all_posts %}
-                <img src="{{post.get_all_photos.first.image_url}}" alt="No photo available..." width="400"> <br>
+                {% with first_photo=post.get_all_photos|first %}
+                    {% if first_photo %}
+                        <img src="{{ first_photo.get_image_url }}" alt="No photo available..." width="400"> <br>
+                    {% else %}
+                        <img src="no photo available..." alt="No photo available..." width="400"> <br>
+                    {% endif %}
+                {% endwith %}
                 <p>
                     "    {{post.caption}}    " <br>
                     Uploaded: {{post.timestamp}} <br>
                 </p>
+                <!--Update post-->
+                <p><a href = "{% url 'update_post' post.pk %}">Update this post</a></p>
+
             {% endfor %}
         </post>
 

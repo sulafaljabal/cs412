@@ -1,0 +1,24 @@
+<!-- mini_insta/update_post_form.html
+ File description: dipslay the HTML form to update an existing Post object tied to a certain profile-->
+
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+    <h1>Update this post</h1>
+    <!-- display the HTML form-->
+    <form action = "{% url 'update_post' post.pk %}" method = "POST"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+
+        <input type="submit" name="submit" value="update">
+    </form>
+
+    <form action ="{% url 'show_profile' post.profile.pk %}" method ="GET"> 
+        <input type="submit" value = "Cancel">
+    </form>
+
+{% endblock %}

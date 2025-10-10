@@ -10,7 +10,7 @@ class CreateArticleForm(forms.ModelForm):
     class Meta:
         """Asociate this form with a model from our database"""
         model = Article 
-        fields = ['author', 'title', 'text', 'image_url']
+        fields = ['author', 'title', 'text', 'image_file']
 #end class
 
 class CreateCommentForm(forms.ModelForm):
@@ -22,3 +22,13 @@ class CreateCommentForm(forms.ModelForm):
         fields = [ 'author', 'text'] # specifies which fields from model we should use
     #end class meta
 #end class CreateCommentForm
+
+class UpdateArticleForm(forms.ModelForm):
+    """A form to update a quote to the database """
+
+    class Meta:
+        """associate this form with the Article Model"""
+        model = Article 
+        fields = ['title', 'text']
+    #end meta
+#end class UpdateArticle Form

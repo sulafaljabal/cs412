@@ -14,7 +14,9 @@ class Article(models.Model): # instances of articles people write
     text = models.TextField(blank=True)
     published = models.DateTimeField(auto_now=True)
     #sets time of article published immediately 
-    image_url = models.URLField(blank=True)
+    #image_url = models.URLField(blank=True)
+    image_file = models.ImageField(blank=True) # an actual image
+
 
     def __str__(self):
         """returns a string representation of this model instance"""

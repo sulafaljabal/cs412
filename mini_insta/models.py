@@ -13,6 +13,7 @@ class Profile(models.Model): # instances of users Profiles
     bio_text = models.TextField(blank=True)
     join_date = models.DateTimeField(auto_now=True)
     profile_image_url = models.URLField(blank=True)
+    profile_image_file = models.ImageField(blank=True) # an actual image
 
     def __str__(self):
         """returns a string representation of this model instance"""
@@ -24,6 +25,15 @@ class Profile(models.Model): # instances of users Profiles
 
         posts = Post.objects.filter(profile=self) 
         return posts 
+    #enddef
+
+    def get_profile_image(self):
+        """ Method to get available profile image: can be either image file or image url if former is not available"""
+        if self.profile_image_file:
+            return self.profile_image_file.url 
+        else:
+            return self.profile_image_url
+        #endif
     #enddef
 
 #end class Profile
@@ -45,7 +55,7 @@ class Post(models.Model): # instances of users Post on a Profile
 
     def get_all_photos(self):
         """accessor method that gets all photos related to a certain post."""
-        photos = Photo.objects.filter(post=self)
+        photos = Photo.objects.filter(post=self).order_by('timestamp')
         return photos 
     #enddef
 
@@ -61,6 +71,21 @@ class Photo(models.Model): # instances of users Profiles
     post = models.ForeignKey("Post", on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now=True)
     image_url = models.URLField(blank=True)
+    image_file = models.ImageField(blank=True)
 
+    def __str__(self):
+        """ return a string representation of Photo object """
+        return f"Photo object tied to Post: {self.post}, uploaded at {self.timestamp}\nImage URL = {self.image_url}\nImage File: {self.image_file}"
+    #end def
+
+    def get_image_url(self):
+        """ Return photo url: can be either image url or image file"""
+        if self.image_file:
+            return self.image_file.url 
+        else:
+            return self.image_url
+
+        #endif 
+    #enddef 
 
 #end class Photo

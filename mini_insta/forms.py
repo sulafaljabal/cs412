@@ -16,4 +16,22 @@ class CreatePostForm(forms.ModelForm):
         fields = ['caption'] # timestamp collected automatically, profile linked already
 #end class
 
+class UpdateProfileForm(forms.ModelForm):
+    """A form to update a Profile"""
+    class Meta:
+        """Associate the form with a model from our db"""
+        model = Profile 
+        fields = ['profile_image_file', 'display_name', 'bio_text'] # cant change username or joindate
 
+    #endMeta
+#end class UpdateProfileForm
+
+class UpdatePostForm(forms.ModelForm):
+    """A form to update a Post""" # not entirely sure how to code this...
+    class Meta:
+        """Associate the form with a model from our db"""
+        model = Post 
+        fields = ['caption'] # cant change timestamp or profile
+
+    #endMeta
+#end class UpdateProfileForm

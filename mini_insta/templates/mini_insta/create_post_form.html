@@ -9,14 +9,16 @@
 
     <h2>Create a new post for {{profile.display_name}}</h2>
 
-    <form method = "POST">
+    <form method = "POST" enctype="multipart/form-data">
         {% csrf_token %}
         <table>
             {{form.as_table}} <br>
         </table>
-            Input image url: <input type="text" name="image_url">
+            Input image(s): <input type="file" multiple name="image_file"> <br>
             <input type="submit" name="submit" value="submit"> <br>
-            <button type = "button"><a href="{% url 'show_profile' profile.pk %}">Cancel</a></button>
-        </form>
+    </form>
+    <form action ="{% url 'show_profile' profile.pk %}" method ="GET">
+        <input type="submit" value = "Cancel">
+    </form>
 </main>
 {% endblock %}

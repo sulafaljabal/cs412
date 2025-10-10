@@ -10,7 +10,7 @@
     <!--scriplet code going through all articles-->
     {% for article in articles %}
         <article>
-            <a href = "{% url 'article' article.pk %}">
+                <a href = "{% url 'article' article.pk %}">
                 <div>
 
                         <h2>
@@ -23,9 +23,12 @@
                             {{article.text}}
                         </p>
                 </div>
-                
-                <img src="{{article.image_url}}" alt="">
-            </a>
+                {% if article.image_file %}
+                    <img src="{{article.image_file.url}}" alt="">
+                {% else %}
+                    <h3>No image available</h3>
+                {% endif %}
+                </a>
         </article>
     {% endfor %}
     </main>

@@ -1,0 +1,24 @@
+<!-- blog/update_article.html
+ dipslay the HT<L form to create a new Article object-->
+
+
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>Update this article</h1>
+    <!-- display the HTML form-->
+    <form action = "{% url 'update_article' article.pk %}" method = "POST"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+
+        <input type="submit" name="submit" value="update">
+    </form>
+
+    <form action ="{% url 'article' article.pk %}" method ="GET">
+        <input type="submit" value = "Cancel">
+    </form>
+
+{% endblock %}

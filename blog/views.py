@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
-from .models import Article
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .models import Article, Comment
 import random 
-from .forms import CreateArticleForm, CreateCommentForm #CreateArticleForm CreateCommentForm
+from .forms import * # CreateArticleForm, CreateCommentForm #CreateArticleForm CreateCommentForm, UpdateArticleForm
 from django.urls import reverse
 
 # Create your views here.
@@ -49,6 +49,14 @@ class CreateArticleView(CreateView):
 
     form_class = CreateArticleForm
     template_name = "blog/create_article_form.html"
+
+    def form_valid(self, form):
+        """Handle the form submission to create a new Article object """
+        print(f"CreateArticleView: form.cleaned_data={form.cleaned_data}")
+
+        # delegate work to superclass version of this method
+        return super().form_valid(form)
+    #end form_valid method
 #end class
 
 class CreateCommentView(CreateView):
@@ -101,4 +109,39 @@ class CreateCommentView(CreateView):
 
 #endclass
 
+class UpdateArticleView(UpdateView):
+    """A view to update an Article and save it to the database."""
 
+    model = Article
+    form_class = UpdateArticleForm 
+    template_name = "blog/update_article_form.html"
+
+    def form_valid(self, form):
+        """Handle the form submission to create a new Article object"""
+        print(f"UpdateArticleView: form.cleaned_data={form.cleaned_data}")
+
+        return super().form_valid(form)
+    #enddef
+#end class UpdateArticleView
+
+class DeleteCommentView(DeleteView):
+    """ a view to delete a comment and remove it from the database"""
+
+    template_name = "blog/delete_comment_form.html"
+    model = Comment 
+    context_object_name = 'comment'
+
+    def get_success_url(self):
+        """Return the URL to which we should be directed to after the delete"""
+
+        # finding primary key of this comment
+        pk = self.kwargs['pk']
+        comment = Comment.objects.get(pk=pk)
+
+        # find article to which this Comment is related by FK
+        article = comment.article 
+
+        # return reverse (instead of super class) to show the article page 
+
+        return reverse('article', kwargs={'pk':article.pk})
+#endclass
