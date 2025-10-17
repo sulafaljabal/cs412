@@ -93,6 +93,12 @@ class Post(models.Model): # instances of users Post on a Profile
         return photos 
     #enddef
 
+    def get_all_comments(self):
+        """accessor method that gets all comments tied to a post instance"""
+        comments = Comment.objects.filter(post=self).order_by('timestamp')
+        return comments 
+    #enddef
+
 
 #end class Post
 
@@ -138,3 +144,27 @@ class Follow(models.Model): # class to showcase who follows who
     def __str__(self):
         """return a string representation of who follows who"""
         return f"{self.profile.username} is followed by: {self.follower_profile.username}"
+    #enddef
+#endclass Follow
+
+class Comment(models.Model): # A class to showcase instances of comments on posts
+    """ Encapsulates data of Comment on a Post, tied to a certain Profile
+    attributes:
+    post (FK): post object comment is made about 
+    profile (FK): profile object showcasing who made the comment
+    timestamp: when comment was made
+    text: text of comment
+    """
+    profile = models.ForeignKey("Profile", on_delete=models.CASCADE, related_name="commenter_profile")
+    post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="post")
+    timestamp = models.DateTimeField(auto_now=True)
+    text = models.TextField(blank=False) # false for now I think?
+
+    def __str__(self):
+        """return a string representation of the comment and its attributes"""
+        return f"Comment {self.text} made by {self.profile.username} on post {self.post.caption} by {self.post.profile}\nPosted at: {self.timestamp}"
+
+    #enddef
+
+
+#endclass
