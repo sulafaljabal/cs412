@@ -1,0 +1,18 @@
+<!--mini_insta/show_followers.html
+Sulaf Al Jabal (U78815065) 10/16/2025
+File to showcase a profile's followers-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h1>Followers of @{{profile.username}}</h1>
+{% for follower in profile.get_followers %}
+<div>
+    <!--link to followers profile pages-->
+    <a href = "{% url 'show_profile' follower.pk %}">
+        <img src="{{follower.get_profile_image}}" alt=" no photo available" width = 200>
+        <br>@{{follower.username}}
+    </a>
+</div>
+{% endfor %}
+{% endblock %}

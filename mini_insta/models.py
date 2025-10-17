@@ -43,7 +43,7 @@ class Profile(models.Model): # instances of users Profiles
 
         followers_list = []
         for follower in followers_qset:
-            followers_list += [follower.follower_profile.username]
+            followers_list += [follower.follower_profile]
         return followers_list
     #enddef
 
@@ -59,7 +59,7 @@ class Profile(models.Model): # instances of users Profiles
         following_qset = Follow.objects.filter(follower_profile=self) # getting query set of all users this instance follows
         following_list = []
         for follower in following_qset:
-            following_list += [follower.profile.username]
+            following_list += [follower.profile]
         #endfor 
         return following_list
     #enddef

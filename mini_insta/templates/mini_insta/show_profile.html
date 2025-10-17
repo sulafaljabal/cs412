@@ -25,15 +25,20 @@
     </profile>
 
     <div id = "profile-info">
+        
         <h4 id = "post_num">
-            Posts
-            {{profile.get_all_posts.count}}
+            {{profile.get_all_posts.count}} posts
         </h4>   
         <h4 id = "followers">
-            TBD followers
+            <a href = "{% url 'show_followers' profile.pk %}">
+            {{profile.get_num_followers}} followers
+            </a>
         </h4>
+
         <h4 id = "following">
-            TBD Following
+            <a href = "{% url 'show_following' profile.pk %}">
+            {{profile.get_num_following}} following
+            </a>
         </h4>
     </div>  
     <div>
