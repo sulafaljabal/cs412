@@ -10,16 +10,22 @@
 {% for p in profile.get_post_feed %}
 <!--Getting first photo of post, likes, comments, caption-->
 
-    <img src="{{ p.profile.get_profile_image }}" alt="No photo available..." width="400">
+    <a href = "{% url 'show_post' p.pk %}">
+    <img src="{{ p.profile.get_profile_image }}" alt="No photo available..." width="100">
     <h3>@{{p.profile.username}}</h3>
     <h4>{{p.timestamp}}</h4>
     <img src="{{ p.get_all_photos.first.get_image_url }}" alt="No photo available..." width="400">
-    <h4>Liked by @{{p.get_first_like.profile.username}} and {{p.get_num_likes}} others </h4>
-    <h4>{{p.caption}}</h4>
+    {% if p.get_num_likes > 0 %}
+        <h4>Liked by @{{p.get_first_like.profile.username}} and {{p.get_num_likes}} others </h4>
+    {% else %}
+        <h4>0 likes</h4>
+    {% endif %}
+        <bold><h4>{{p.caption}}</h4></bold>
     {% for comment in p.get_all_comments %}
     <h4>@{{comment.profile.username}}: {{comment.text}}</h4>
 {% endfor %}
 {% empty %}
     <h3>is empty ... <br>They do not follow any accounts</h3>
 {% endfor %}
+</a>
 {% endblock %}

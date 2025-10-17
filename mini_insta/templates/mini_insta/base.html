@@ -18,9 +18,13 @@
 
         <footer>
             <nav>
-                <button type="button">
-                <strong><a href = "{% url 'show_all_profiles' %}">Home Page</a> </strong>
-                </button>
+                {% if profile %}
+                <button type="button"><strong><a href = "{% url 'show_feed' profile.pk %}">Home Page</a> </strong></button>
+                <button type="button"><strong><a href = "{% url 'create_post' profile.pk %}">Create Post</a> </strong></button>
+                <button type="button"><strong><a href = "{% url 'show_profile' profile.pk %}">Show Profile</a> </strong></button>
+                {% else %}
+                    <a href="{% url 'show_all_profiles' %}">View All Profiles</a>
+                {% endif %}
             </nav>
         </footer>
 
