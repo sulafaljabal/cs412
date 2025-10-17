@@ -23,7 +23,7 @@ class Profile(models.Model): # instances of users Profiles
     def get_all_posts(self):
         """returns all of the posts on this profile"""
 
-        posts = Post.objects.filter(profile=self) 
+        posts = Post.objects.filter(profile=self).order_by("timestamp")
         return posts 
     #enddef
 
@@ -70,6 +70,20 @@ class Profile(models.Model): # instances of users Profiles
         return len(self.get_following())
     #enddef
 
+    def get_post_feed(self):
+        """method to get feed specific to profile instance, based off of who they follow"""
+        following_list = self.get_following()
+        post_list = [] #list used to store all posts
+        for user in following_list:
+            #get all posts
+            for p in user.get_all_posts():
+                post_list += [p]
+            #endfor
+        #endfor
+        return post_list
+    #enddef
+
+
 #end class Profile
 
 class Post(models.Model): # instances of users Post on a Profile
@@ -101,7 +115,7 @@ class Post(models.Model): # instances of users Post on a Profile
 
     def get_all_likes(self):
         """accessor method that gets all likes tied to a certain post"""
-        likes = Like.objects.filter(post=self)
+        likes = Like.objects.filter(post=self).order_by("timestamp")
         return likes 
     #enddef
 

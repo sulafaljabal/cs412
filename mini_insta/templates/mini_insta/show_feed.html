@@ -1,0 +1,25 @@
+<!-- mini_insta/show_feed.html
+ Sulaf Al Jabal (sulafaj@bu.edu) 10/17/2025
+ Description: html file for displaying feed of a certain profile object-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+<h2>@{{profile.username}}'s feed</h2>
+    
+{% for p in profile.get_post_feed %}
+<!--Getting first photo of post, likes, comments, caption-->
+
+    <img src="{{ p.profile.get_profile_image }}" alt="No photo available..." width="400">
+    <h3>@{{p.profile.username}}</h3>
+    <h4>{{p.timestamp}}</h4>
+    <img src="{{ p.get_all_photos.first.get_image_url }}" alt="No photo available..." width="400">
+    <h4>Liked by @{{p.get_first_like.profile.username}} and {{p.get_num_likes}} others </h4>
+    <h4>{{p.caption}}</h4>
+    {% for comment in p.get_all_comments %}
+    <h4>@{{comment.profile.username}}: {{comment.text}}</h4>
+{% endfor %}
+{% empty %}
+    <h3>is empty ... <br>They do not follow any accounts</h3>
+{% endfor %}
+{% endblock %}

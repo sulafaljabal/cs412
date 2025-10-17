@@ -200,3 +200,26 @@ class ShowFollowingDetailView(DetailView):
     context_object_name = 'profile'
     template_name = "mini_insta/show_following.html"
 #endclass
+
+class PostFeedListView(ListView):
+    """List view of a profile's feed (based off of who they're following)"""
+    model = Post  # former profile... html code wouldn't run when this was the case
+    context_object_name = 'post'
+    template_name = 'mini_insta/show_feed.html'
+
+    def get_feed_list(self):
+        """return post feed for profile"""
+        profile_pk = self.kwargs.get('pk')
+        profile = Profile.objects.get(pk=profile_pk)
+        return profile.get_post_feed()
+    #enddef
+
+    def get_context_data(self, **kwargs):
+        """get context dictionary for html page
+        adding profile object"""
+        context = super().get_context_data(**kwargs)
+        profile_pk = self.kwargs.get('pk')
+        context['profile'] = Profile.objects.get(pk=profile_pk)
+        return context
+    #enddef
+#endclass
