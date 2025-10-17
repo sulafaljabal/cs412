@@ -31,6 +31,14 @@
                 <img src="No photo available" alt="No photo available..." width="400"> <br>
             {% endif %}
         {% endfor %}
+
+        <div>
+            <h3>Comments</h3>
+            {% for comment in post.get_all_comments %}
+                <h4>@{{comment.profile.username}} </h4>
+                <p>{{comment.text}}</p>
+            {% endfor %}
+        </div>
         
     </div>
 </main>
