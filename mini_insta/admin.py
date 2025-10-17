@@ -11,3 +11,4 @@ admin.site.register(Photo) # registering Photo model
 admin.site.register(Post) # registering Post model
 admin.site.register(Follow) # registering Follow model
 admin.site.register(Comment) # registering Commment model
+admin.site.register(Like) # registering Commment model

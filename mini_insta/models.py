@@ -99,6 +99,22 @@ class Post(models.Model): # instances of users Post on a Profile
         return comments 
     #enddef
 
+    def get_all_likes(self):
+        """accessor method that gets all likes tied to a certain post"""
+        likes = Like.objects.filter(post=self)
+        return likes 
+    #enddef
+
+    def get_num_likes(self):
+        """number of likes"""
+        a = len(self.get_all_likes())
+        return a if a >0 else 0
+    #enddef
+
+    def get_first_like(self):
+        """returns first person who liked the post"""
+        return self.get_all_likes().first()
+
 
 #end class Post
 
@@ -168,3 +184,20 @@ class Comment(models.Model): # A class to showcase instances of comments on post
 
 
 #endclass
+
+class Like(models.Model): # class to showcase a like tied to a certain post 
+    """encapsulates data of a like on a post
+    attributes: 
+    post (FK): post being liked
+    profile (FK): which profile is liking the post 
+    timestamp: when the like was made """
+
+    profile = models.ForeignKey("Profile", on_delete=models.CASCADE, related_name="liker_profile")
+    timestamp = models.DateTimeField(auto_now=True)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="post_liked")
+
+    def __str__(self):
+        """return a string representation of the like and its attributes"""
+        return f"Post {self.post} liked by {self.profile} at {self.timestamp}"
+    #enddef
+#endclass    

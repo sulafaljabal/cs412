@@ -33,6 +33,7 @@
         {% endfor %}
 
         <div>
+            <h3>Liked by @{{post.get_first_like.profile.username}} and {{post.get_num_likes }} others</h3>
             <h3>Comments</h3>
             {% for comment in post.get_all_comments %}
                 <h4>@{{comment.profile.username}} </h4>
