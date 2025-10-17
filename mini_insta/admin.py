@@ -9,3 +9,4 @@ from .models import * # Profile, Photo, Post
 admin.site.register(Profile) # registering Profile model
 admin.site.register(Photo) # registering Photo model
 admin.site.register(Post) # registering Post model
+admin.site.register(Follow) # registering Follow model

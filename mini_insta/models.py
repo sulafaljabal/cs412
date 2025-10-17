@@ -35,6 +35,40 @@ class Profile(models.Model): # instances of users Profiles
             return self.profile_image_url
         #endif
     #enddef
+    
+    def get_followers(self):
+        """Method to get all followers tied to an instance of profile"""
+
+        followers_qset = Follow.objects.filter(profile=self) # getting query set of all followers to this instance of profile
+
+        followers_list = []
+        for follower in followers_qset:
+            followers_list += [follower.follower_profile.username]
+        return followers_list
+    #enddef
+
+    def get_num_followers(self):
+        """Method to get number of followers an instance of a profile has """
+        return len(self.get_followers())
+    #enddef
+
+    def get_following(self):
+        """ Method to get all accounts this profile instance follows, opposite of
+        previous two functions defined above """
+
+        following_qset = Follow.objects.filter(follower_profile=self) # getting query set of all users this instance follows
+        following_list = []
+        for follower in following_qset:
+            following_list += [follower.profile.username]
+        #endfor 
+        return following_list
+    #enddef
+
+    def get_num_following(self):
+        """Method to get the number of accounts this profile instance follows."""
+        
+        return len(self.get_following())
+    #enddef
 
 #end class Profile
 
@@ -89,3 +123,18 @@ class Photo(models.Model): # instances of users Profiles
     #enddef 
 
 #end class Photo
+
+class Follow(models.Model): # class to showcase who follows who
+    """Encapsulate the data of a mini_insta follow
+    attributes:
+    profile (FK): profile object of the person being followed
+    follower_profile: profile object of who is following the profile (defined above)
+    timestamp: when the follower started following the profile"""
+
+    profile = models.ForeignKey("Profile", on_delete=models.CASCADE, related_name='profile')#to stop django from complaining
+    follower_profile = models.ForeignKey("Profile", on_delete=models.CASCADE, related_name='follower_profile')
+    timestamp = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        """return a string representation of who follows who"""
+        return f"{self.profile.username} is followed by: {self.follower_profile.username}"

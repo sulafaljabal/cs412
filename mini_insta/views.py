@@ -186,3 +186,17 @@ class PostDetailView(DetailView):
     template_name = "mini_insta/show_post.html"
 
 #endclass
+
+class ShowFollowersDetailView(DetailView):
+    """Detail view of followers tied to a certain profile instance"""
+    model = Profile 
+    context_object_name = 'profile'
+    template_name = "mini_insta/show_followers.html"
+#endclass
+
+class ShowFollowingDetailView(DetailView):
+    """Detail view of who a profile instance follows"""
+    model = Profile 
+    context_object_name = 'profile'
+    template_name = "mini_insta/show_following.html"
+#endclass
