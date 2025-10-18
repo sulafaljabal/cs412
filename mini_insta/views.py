@@ -223,3 +223,69 @@ class PostFeedListView(ListView):
         return context
     #enddef
 #endclass
+
+class SearchView(ListView):
+    """Class to search up Profiles and Posts based off text
+    Search done through Profile """
+
+    template_name = 'mini_insta/search_results.html'
+    context_object_name = 'posts'
+
+    def dispatch(self, request, *args, **kwargs):
+        """overriding dispatch method, checking if query is present"""
+
+        if 'query' not in self.request.GET: # show search.html template if query is not present 
+            profile_pk = self.kwargs.get('pk')
+            profile = Profile.objects.get(pk=profile_pk)
+            template = 'mini_insta/search.html'
+            return render(request, template, {'profile': profile})
+        else: # if query IS PRESENT
+            return super().dispatch(request, *args, **kwargs)
+        #endif 
+    #enddef
+
+    def get_context_data(self, **kwargs):
+        """returning context dictionary for template. Adding profile, query, posts and profiles
+        to the dictionary """
+
+        context = super().get_context_data(**kwargs)
+
+        # grabbing query 
+        query = self.request.GET.get('query', '') # null val incase its empty
+        context['query'] = query 
+
+        # profile logic
+        profile_pk = self.kwargs.get('pk')
+        profile = Profile.objects.get(pk=profile_pk)
+        context['profile'] = profile 
+
+        # getting posts 
+        context['posts'] = self.get_queryset()
+
+        # matching profiles
+        if query:
+            username_result = Profile.objects.filter(username__icontains=query)
+            display_name_result = Profile.objects.filter(display_name__icontains=query)
+            bio_result = Profile.objects.filter(bio_text__icontains=query)
+
+            all_profiles = (username_result | display_name_result | bio_result)
+            all_profiles.distinct()
+            context['profiles'] = all_profiles 
+        else:
+            context['profiles'] = Profile.objects.none()
+        #endif
+
+        return context 
+    #enddef
+
+
+    def get_queryset(self):
+        """ return posts that match our search query """
+        query = self.request.GET.get('query', '')
+        if query:
+            return Post.objects.filter(caption__icontains=query).order_by('timestamp')
+            # filtering posts by timestamp
+        #endif
+        return Post.objects.none()
+    #enddef
+#endclass

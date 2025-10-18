@@ -1,0 +1,42 @@
+<!--File: mini_insta/search_results.html
+Sulaf Al Jabal (U78815065) 10/17/2025
+    Description: html template to display search results of query 
+-->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+    <h2>@{{profile.username}}: Results for "{{ query }}"</h2>
+    
+    <a href="{% url 'search' profile.pk %}">New Search</a> 
+    
+    <!-- going through profiles, then posts as per hw instructions-->
+    <h3>Profiles</h3>
+    {% for p in profiles %} 
+        {% if p.profile_image_url %} 
+            <img src="{{ p.profile_image_url }}" alt="{{ p.username }}" width="100"> 
+        {% endif %}
+
+        <p><a href="{% url 'show_profile' p.pk %}">{{ p.display_name }}</a></p> 
+        <p>@{{ p.username }}</p>
+
+    {% empty %} 
+        <p>No profiles found.</p>
+    {% endfor %}
+    
+    <h3>Posts</h3>
+    {% for post in posts %} 
+        <p><a href="{% url 'show_profile' post.profile.pk %}">{{ post.profile.display_name }}</a> - {{ post.timestamp }}</p>
+        
+        <a href="{% url 'show_post' post.pk %}">
+            {% if post.get_all_photos.first %}
+                <img src="{{ post.get_all_photos.first.get_image_url }}" alt="No photo available" width="300">
+            {% endif %}
+        </a>
+        
+        <p>{{ post.caption }}</p>
+
+    {% empty %} <!-- no posts-->
+        <p>No posts found.</p>
+    {% endfor %}
+{% endblock %}
