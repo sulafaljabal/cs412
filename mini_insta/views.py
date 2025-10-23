@@ -8,12 +8,28 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 from .models import * # Profile, Post, Photos
 from django.urls import reverse
 from .forms import * #CreatePostForm, more incoming
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+class ProfileRequiredMixin(LoginRequiredMixin):
+    """Profile subclass of LoginRequiredMixin"""
+
+    def get_profile(self):
+        """Get Profile object associated with user to grant them access to profile-related views"""
+        return self.request.user.profile 
+    #enddef
+
+    def get_login_url(self):
+        """Get login url for user to login"""
+        return reverse('login')
+    #enddef
+
+#endclass
 
 # Create your views here.
 
 class ShowAllView(ListView):
     """Define a veiw class to show all profile Profiles"""
+    # this does not require authentication
 
     model = Profile
     template_name = "mini_insta/show_all_profiles.html"
@@ -23,15 +39,16 @@ class ShowAllView(ListView):
 
 
 class ProfileView(DetailView):
-    """Displays a single Profile"""
+    """Displays a single Profile. This does not require authentication"""
 
     model = Profile
     template_name = "mini_insta/show_profile.html"
     context_object_name = "profile"
 #end class
 
-class CreatePostView(CreateView):
-    """A view to handle creation of a new Post on a certain Profile"""
+class CreatePostView(ProfileRequiredMixin, CreateView):
+    """A view to handle creation of a new Post on a certain Profile
+    This requires authentication"""
 
     form_class = CreatePostForm
     model = Post
@@ -91,9 +108,9 @@ class CreatePostView(CreateView):
     #enddef
 #end class
 
-class DeletePostView(DeleteView):
+class DeletePostView(ProfileRequiredMixin, DeleteView):
     """This method lets users delete instances of Post objects, automatically deletes instances of Photos
-    connected to those Posts as well."""
+    connected to those Posts as well. This requires authentication"""
 
     template_name = "mini_insta/delete_post_form.html"
     model = Post 
@@ -120,8 +137,9 @@ class DeletePostView(DeleteView):
     #enddef
 #end class DeletePost View
 
-class UpdateProfileView(UpdateView):
-    """Updates instance of Profile object"""
+class UpdateProfileView(ProfileRequiredMixin, UpdateView):
+    """Updates instance of Profile object.
+    This requires authentication """
     model = Profile 
     form_class = UpdateProfileForm 
     template_name = "mini_insta/update_profile_form.html"
@@ -143,8 +161,9 @@ class UpdateProfileView(UpdateView):
 #end class UpdateProfile
 
 
-class UpdatePostView(UpdateView):
-    """Updates instance of Post object"""
+class UpdatePostView(ProfileRequiredMixin, UpdateView):
+    """Updates instance of Post object
+    This requires authentication"""
     model = Post 
     form_class = UpdatePostForm 
     template_name = "mini_insta/update_post_form.html"    
@@ -201,8 +220,9 @@ class ShowFollowingDetailView(DetailView):
     template_name = "mini_insta/show_following.html"
 #endclass
 
-class PostFeedListView(ListView):
-    """List view of a profile's feed (based off of who they're following)"""
+class PostFeedListView(ProfileRequiredMixin, ListView):
+    """List view of a profile's feed (based off of who they're following)
+    Requires authentication """
     model = Post  # former profile... html code wouldn't run when this was the case
     context_object_name = 'post'
     template_name = 'mini_insta/show_feed.html'
@@ -224,9 +244,10 @@ class PostFeedListView(ListView):
     #enddef
 #endclass
 
-class SearchView(ListView):
+class SearchView(ProfileRequiredMixin, ListView):
     """Class to search up Profiles and Posts based off text
-    Search done through Profile """
+    Search done through Profile 
+    This requires authentication """
 
     template_name = 'mini_insta/search_results.html'
     context_object_name = 'posts'

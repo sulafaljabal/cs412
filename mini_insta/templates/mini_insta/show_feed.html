@@ -5,6 +5,8 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
+
 <h2>@{{profile.username}}'s feed</h2>
     
 {% for p in profile.get_post_feed %}
@@ -28,4 +30,9 @@
     <h3>is empty</h3>
 {% endfor %}
 </a>
+
+{% else %}
+<p>You must be logged in to view a profile specific feed</p>
+{% endif %}
+
 {% endblock %}

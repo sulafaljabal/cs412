@@ -6,6 +6,8 @@ Sulaf Al Jabal (U78815065) 10/17/2025
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
+
     <h2>@{{profile.username}}: Results for "{{ query }}"</h2>
     
     <a href="{% url 'search' profile.pk %}">New Search</a> 
@@ -39,4 +41,7 @@ Sulaf Al Jabal (U78815065) 10/17/2025
     {% empty %} <!-- no posts-->
         <p>No posts found.</p>
     {% endfor %}
+{% else %}
+<p>You must be logged in to view results of search</p>
+{% endif %}
 {% endblock %}

@@ -5,7 +5,8 @@
 {% extends 'mini_insta/base.html' %}
  
 {% block content %}
- 
+{% if user.is_authenticated %}
+
 <h3>Are you sure you want to delete this post?</h3>
 <h3>@{{post.profile.username}}</h3>
 <h4>Posted on: {{post.timestamp}}</h4>
@@ -23,6 +24,8 @@
     {% csrf_token %}
     <input type='submit' value="Cancel">
 </form>
- 
+{% else %}
+<p>You must be logged in to delete a post </p>
+{% endif %}
 {% endblock %}
  

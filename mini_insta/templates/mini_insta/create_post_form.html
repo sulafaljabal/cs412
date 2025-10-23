@@ -5,6 +5,7 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <main class="grid-container">
 
     <h2>Create a new post for {{profile.display_name}}</h2>
@@ -23,4 +24,7 @@
     </form>
     
 </main>
+{% else %}
+    <p>You must be logged in to make a post</p>
+{% endif %}
 {% endblock %}

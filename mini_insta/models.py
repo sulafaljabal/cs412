@@ -3,6 +3,7 @@
 # define data models for the mini_insta application
 
 from django.db import models
+from django.contrib.auth.models import User
 
 class Profile(models.Model): # instances of users Profiles
     """ Encapsulate the data of a mini_insta Profile. Contains user's username, display name, 
@@ -14,6 +15,7 @@ class Profile(models.Model): # instances of users Profiles
     join_date = models.DateTimeField(auto_now=True)
     profile_image_url = models.URLField(blank=True)
     profile_image_file = models.ImageField(blank=True) # an actual image
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
 
     def __str__(self):
         """returns a string representation of this model instance"""

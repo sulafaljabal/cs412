@@ -5,6 +5,8 @@
 {% extends 'mini_insta/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
+
     <h1>Update this post</h1>
     <!-- display the HTML form-->
     <form method = "POST">
@@ -19,5 +21,9 @@
         <form action ="{% url 'show_profile' profile.pk %}" method ="GET"> 
         <input type="submit" value = "Cancel">
     </form>
+
+{% else %}
+<p>You must be logged in to update a post</p>
+{% endif %}
 
 {% endblock %}
