@@ -15,7 +15,7 @@ class Profile(models.Model): # instances of users Profiles
     join_date = models.DateTimeField(auto_now=True)
     profile_image_url = models.URLField(blank=True)
     profile_image_file = models.ImageField(blank=True) # an actual image
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile", null=True, blank=True)
 
     def __str__(self):
         """returns a string representation of this model instance"""

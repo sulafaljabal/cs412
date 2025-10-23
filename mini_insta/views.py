@@ -39,11 +39,31 @@ class ShowAllView(ListView):
 
 
 class ProfileView(DetailView):
-    """Displays a single Profile. This does not require authentication"""
+    """Displays a single Profile.
+    Requires logic that to figure out if a user is viewing their own profile or if they are
+    viewing another profile (also have to figure out if both profiles follow each other or not)"""
 
     model = Profile
     template_name = "mini_insta/show_profile.html"
     context_object_name = "profile"
+
+    def get_context_data(self, **kwargs):
+        """returning profile context data needed for a user to view their own profile"""
+        context = super().get_context_data(**kwargs)
+        profile = self.get_object()
+
+        if self.request.user.is_authenticated: # if user is logged in
+            user_profile = Profile.objects.get(user=self.request.user) # getting profile tied to a certain user instance
+            context['user_is_owner'] = (user_profile == profile) # if this is true then user is viewing their own profile 
+            context['user_is_following'] = Follow.objects.filter(
+                follower_profile = user_profile, # user
+                profile = profile # person being followed
+            ).exists() # if this is false, then the user does not follow the profile they are viewing
+            # if this is true then the user DOES follow the profile they are viewing
+            # this is necessary in case the user wants to unfollow the profile
+        else: # if the user IS NOT authenticated 
+            context['user_is_owner'] = False # user is not logged in
+            context['user_is_following'] = False # user is not logged in, therefore can't follow the profile they're currently viewing
 #end class
 
 class CreatePostView(ProfileRequiredMixin, CreateView):
