@@ -35,3 +35,9 @@ class UpdatePostForm(forms.ModelForm):
 
     #endMeta
 #end class UpdateProfileForm
+
+class CreateProfileForm(forms.ModelForm):
+    """Form to create profile through application"""
+    class Meta:
+        model = Profile 
+        fields = ['username', 'display_name', 'bio_text', 'profile_image_url']

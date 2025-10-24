@@ -1,0 +1,31 @@
+<!-- mini_insta/create_profile_form.html
+ Sulaf Al Jabal (sulafaj@bu.edu) 10/24/25
+Description: html template to create a new profile -->
+
+{% extends 'mini_insta/base.html' %}
+
+{% block content %}
+    <h2>Create Profile</h2>
+    
+    <form method="POST">
+        {% csrf_token %}
+        
+        <h3>User Account Information</h3>
+        <table>
+            {{ user_form.as_table }}
+        </table>
+        
+        <h3>Profile Information</h3>
+        <table>
+            {{ form.as_table }}
+            
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">Create Profile</button>
+                    <a href="{% url 'show_all_profiles' %}">Cancel</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

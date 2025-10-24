@@ -14,7 +14,7 @@
 <form method="post" >
     {% csrf_token %}
     {{form.as_p}}
-    <input type="hidden" next = "next" value="{% url 'show_all_profiles' %}">
+    <input type="hidden" name = "next" value="{% url 'show_all_profiles' %}">
     <button type="submit">Login</button>
 </form>
 {% endblock %}
