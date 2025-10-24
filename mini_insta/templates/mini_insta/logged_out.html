@@ -1,0 +1,16 @@
+<!-- mini_insta/templates/logged_out.html
+ Sulaf Al Jabal (sulafaj@bu.edu) 10/24/25
+ Description: html template to show logged out confirmation -->
+{% extends 'mini_insta/base.html' %}
+ 
+ 
+{% block content %}
+ 
+<h2>Logged out</h2>
+<p><strong>You have been logged out</strong></p>
+
+
+<p><a href="{% url 'login' %}">Login</p>
+
+{% endblock %}
+ 

@@ -4,11 +4,12 @@
 
 
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, TemplateView
 from .models import * # Profile, Post, Photos
 from django.urls import reverse
 from .forms import * #CreatePostForm, more incoming
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 class ProfileRequiredMixin(LoginRequiredMixin):
     """Profile subclass of LoginRequiredMixin"""
@@ -52,7 +53,8 @@ class ProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         profile = self.get_object()
 
-        print(f"DEBUG: profile = {profile}, profile.pk = {profile.pk}")
+        # print(f"DEBUG: profile = {profile}, profile.pk = {profile.pk}")
+
         if self.request.user.is_authenticated: # if user is logged in
             user_profile = Profile.objects.get(user=self.request.user) # getting profile tied to a certain user instance
             context['user_is_owner'] = (user_profile == profile) # if this is true then user is viewing their own profile 
@@ -65,6 +67,8 @@ class ProfileView(DetailView):
         else: # if the user IS NOT authenticated 
             context['user_is_owner'] = False # user is not logged in
             context['user_is_following'] = False # user is not logged in, therefore can't follow the profile they're currently viewing
+        #endif 
+        return context
 #end class
 
 class CreatePostView(ProfileRequiredMixin, CreateView):
@@ -176,6 +180,12 @@ class UpdateProfileView(ProfileRequiredMixin, UpdateView):
 
         return reverse('show_profile', kwargs={'pk': self.pk})
     #enddef
+
+    def get_object(self):
+        """Return profile of logged in user"""
+        return self.get_profile()
+    #enddef
+
 #end class UpdateProfile
 
 
@@ -208,7 +218,7 @@ class UpdatePostView(ProfileRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
 
         # pk = self.kwargs['pk']
-        profile = self.object.profile
+        profile = self.get_profile()
 
         context['profile'] = profile 
         return context 
@@ -247,8 +257,8 @@ class PostFeedListView(ProfileRequiredMixin, ListView):
 
     def get_feed_list(self):
         """return post feed for profile"""
-        profile_pk = self.kwargs.get('pk')
-        profile = Profile.objects.get(pk=profile_pk)
+
+        profile = self.get_profile()
         return profile.get_post_feed()
     #enddef
 
@@ -256,8 +266,7 @@ class PostFeedListView(ProfileRequiredMixin, ListView):
         """get context dictionary for html page
         adding profile object"""
         context = super().get_context_data(**kwargs)
-        profile_pk = self.kwargs.get('pk')
-        context['profile'] = Profile.objects.get(pk=profile_pk)
+        context['profile'] = self.get_profile()
         return context
     #enddef
 #endclass
@@ -274,8 +283,7 @@ class SearchView(ProfileRequiredMixin, ListView):
         """overriding dispatch method, checking if query is present"""
 
         if 'query' not in self.request.GET: # show search.html template if query is not present 
-            profile_pk = self.kwargs.get('pk')
-            profile = Profile.objects.get(pk=profile_pk)
+            profile = self.get_profile()
             template = 'mini_insta/search.html'
             return render(request, template, {'profile': profile})
         else: # if query IS PRESENT
@@ -294,8 +302,7 @@ class SearchView(ProfileRequiredMixin, ListView):
         context['query'] = query 
 
         # profile logic
-        profile_pk = self.kwargs.get('pk')
-        profile = Profile.objects.get(pk=profile_pk)
+        profile = self.get_profile()
         context['profile'] = profile 
 
         # getting posts 
@@ -327,4 +334,9 @@ class SearchView(ProfileRequiredMixin, ListView):
         #endif
         return Post.objects.none()
     #enddef
+#endclass
+
+class LoggedOutView(TemplateView):
+    """A view to show confirmation that user has been logged out"""
+    template_name = 'mini_insta/logged_out.html'
 #endclass

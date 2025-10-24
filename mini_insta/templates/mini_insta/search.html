@@ -9,7 +9,7 @@ Description: search template file, displays search form-->
 
     <h2>@{{profile.username}}: Search</h2>
     
-    <form method="GET" action="{% url 'search' profile.pk %}">
+    <form method="GET" action="{% url 'search' %}">
         <label for="query">Search:</label>
         <input type="text" id="query" name="query" required>
         <button type="submit">Search</button>

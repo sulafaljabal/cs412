@@ -31,6 +31,7 @@ urlpatterns = [
     path('profile/search', SearchView.as_view(), name="search"),
 
     path('login/', auth_views.LoginView.as_view(template_name='mini_insta/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='show_all_profiles'), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='logged_out'), name='logout'),
+    path('logged_out/', LoggedOutView.as_view(), name='logged_out'),
 
 ]
