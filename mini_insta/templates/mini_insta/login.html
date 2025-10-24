@@ -1,0 +1,20 @@
+<!-- mini_insta/templates/login.html
+ Sulaf Al Jabal (sulafaj@bu.edu) 10/23/25
+ Description: html template to let users login -->
+{% extends 'mini_insta/base.html' %}
+ 
+ 
+{% block content %}
+<!-- This basic authentication form works.
+- need to set "next" to redirect to correct page.
+-->
+ 
+ 
+<h1>Login</h1>
+<form method="post" action="{% url 'login' %}" >
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" next = "next" value="{% url 'show_all_profiles' %}">
+</form>
+{% endblock %}
+ 

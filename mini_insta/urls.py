@@ -8,6 +8,7 @@ from django.conf import settings
 from . import views
 
 from.views import * #ShowAllView, ProfileView CreatePostView, etc...
+from django.contrib.auth import views as auth_views ##new
 
 # URL patterns specific to the quotes app
 #app_name = "mini_insta"
@@ -25,4 +26,7 @@ urlpatterns = [
     path('profile/<int:pk>/following', ShowFollowingDetailView.as_view(), name="show_following"),
     path('profile/feed', PostFeedListView.as_view(), name="show_feed"),
     path('profile/search', SearchView.as_view(), name="search"),
+    path('login/', auth_views.LoginView.as_view(template_name='mini_insta/login.html'), name='login'),
+    path('lougout/', auth_views.LogoutView.as_view(next_page='show_all_profiles'), name='logout'),
+
 ]
