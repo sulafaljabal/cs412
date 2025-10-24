@@ -16,9 +16,9 @@
                 {{profile.bio_text}} <br>
                 Joined on: {{profile.join_date}} <br>
             </p> 
-            <button type="button"><h3><a href = "{% url 'create_post' profile.pk %}">Create a post for {{profile.display_name}}</a></h3></button>
+            <button type="button"><h3><a href = "{% url 'create_post' %}">Create a post for {{profile.display_name}}</a></h3></button>
             <br>
-            <button type="button"><h3><a href="{% url 'update_profile' profile.pk %}">Update this profile</a></h3></button>
+            <button type="button"><h3><a href="{% url 'update_profile' %}">Update this profile</a></h3></button>
         </div>
 
         <img src="{{profile.get_profile_image}}" alt="No image available">

@@ -52,6 +52,7 @@ class ProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         profile = self.get_object()
 
+        print(f"DEBUG: profile = {profile}, profile.pk = {profile.pk}")
         if self.request.user.is_authenticated: # if user is logged in
             user_profile = Profile.objects.get(user=self.request.user) # getting profile tied to a certain user instance
             context['user_is_owner'] = (user_profile == profile) # if this is true then user is viewing their own profile 
@@ -80,9 +81,7 @@ class CreatePostView(ProfileRequiredMixin, CreateView):
 
         print(f"CreatePostView.form_valid: form.cleaned_data={form.cleaned_data}")
 
-        # get PK from URL pattern 
-        pk = self.kwargs['pk'] 
-        profile = Profile.objects.get(pk=pk)
+        profile = self.get_profile()
 
         #attach this profile to the post 
         form.instance.profile = profile
@@ -109,9 +108,9 @@ class CreatePostView(ProfileRequiredMixin, CreateView):
     def get_success_url(self) -> str:
         """Return the URL to redirect to after creating a new Post."""
 
-        pk = self.kwargs['pk']
+        profile = self.get_profile()
 
-        return reverse('show_profile', kwargs={'pk': pk})
+        return reverse('show_profile', kwargs={'pk': profile.pk})
     #enddef
 
     def get_context_data(self):
@@ -120,8 +119,7 @@ class CreatePostView(ProfileRequiredMixin, CreateView):
         # Calling the superclass method 
         context = super().get_context_data()
 
-        pk = self.kwargs['pk']
-        profile = Profile.objects.get(pk=pk)
+        profile = self.get_profile()
 
         context['profile'] = profile 
         return context 
@@ -150,7 +148,7 @@ class DeletePostView(ProfileRequiredMixin, DeleteView):
         """Return the URL which we redirect the browser to after successfully
         deleting a Post """
 
-        profile = self.object.profile # getting profile via post field
+        profile = self.get_profile() # getting profile via post field
         
         # redirect user to the profile of the user after the post has been deleted
         return reverse('show_profile', kwargs={'pk': profile.pk})
@@ -174,9 +172,9 @@ class UpdateProfileView(ProfileRequiredMixin, UpdateView):
     def get_success_url(self) -> str:
         """Return the URL to redirect to after successfully updating a Profile."""
 
-        pk = self.kwargs['pk']
+        profile = self.get_profile()
 
-        return reverse('show_profile', kwargs={'pk': pk})
+        return reverse('show_profile', kwargs={'pk': self.pk})
     #enddef
 #end class UpdateProfile
 

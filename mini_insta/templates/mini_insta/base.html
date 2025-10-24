@@ -19,13 +19,21 @@
 
         <footer>
             <nav>
+                <a href="{% url 'show_all_profiles' %}">View All Profiles</a>
+
                 {% if request.user.is_authenticated %}
                 <button type="button"><strong><a href = "{% url 'show_feed' %}">Home Page</a> </strong></button>
                 <button type="button"><strong><a href = "{% url 'search' %}">Search</a> </strong></button>
                 <button type="button"><strong><a href = "{% url 'create_post' %}">Create Post</a> </strong></button>
+
+                {% with user.profile as my_profile %} <!--Checking if logged in user has a profile-->
+                {% if my_profile %} <!--if profile exists, let user access their profile-->
                 <button type="button"><strong><a href = "{% url 'show_profile' user.profile.pk %}">Show Profile</a> </strong></button>
+                {% endif %}
+                {% endwith %}
+
                 {% else %}
-                    <a href="{% url 'show_all_profiles' %}">View All Profiles</a>
+                <a href="{% url 'show_all_profiles' %}">View All Profiles</a>
                 {% endif %}
             </nav>
         </footer>
