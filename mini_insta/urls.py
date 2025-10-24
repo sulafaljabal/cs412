@@ -14,8 +14,8 @@ from django.contrib.auth import views as auth_views ##new
 #app_name = "mini_insta"
 
 urlpatterns = [
+    path('', ShowAllView.as_view(), name="show_all_profiles"),
     path('show_all_profiles',ShowAllView.as_view(), name="show_all_profiles"),
-    path('',ShowAllView.as_view(), name="show_all_profiles"),
 
     path('post/<int:pk>/delete', DeletePostView.as_view(), name="delete_post"),
     path('post/<int:pk/update', UpdatePostView.as_view(), name="update_post"),
