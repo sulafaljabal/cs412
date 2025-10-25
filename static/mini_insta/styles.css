@@ -46,6 +46,10 @@ a:hover {
     text-decoration: underline;
 }
 
+.helptext {
+    display: none;
+}
+
 
 /* responsive styles: adapt to smaller screen sizes 
 @media screen and (max-width: 980px) {

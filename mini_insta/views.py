@@ -236,6 +236,24 @@ class PostDetailView(DetailView):
     model = Post 
     template_name = "mini_insta/show_post.html"
 
+    def get_context_data(self, **kwargs):
+        """Add is_owner and has_liked to context"""
+
+        context = super().get_context_data(**kwargs)
+        post = self.get_object()
+        
+        if self.request.user.is_authenticated:
+            user_profile = Profile.objects.get(user=self.request.user) # self.get_profile()
+            context['is_owner'] = (user_profile == post.profile)
+            context['has_liked'] = Like.objects.filter(
+                profile=user_profile,
+                post=post
+            ).exists()
+        else:
+            context['is_owner'] = False
+            context['has_liked'] = False
+        
+        return context
 #endclass
 
 class ShowFollowersDetailView(DetailView):
@@ -370,8 +388,15 @@ class CreateProfileView(CreateView):
             form.instance.user = user 
             return super().form_valid(form)
         else:
-            return super().form_invalid() # failed
+            return super().form_invalid(form) # failed
         #endif
+    #enddef
+
+    def get_success_url(self):
+
+        profile = self.get_profile()
+
+        return reverse('show_profile', kwargs={'pk': profile.pk})
     #enddef
 #endclass
 

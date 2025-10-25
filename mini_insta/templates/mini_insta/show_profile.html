@@ -16,9 +16,14 @@
                 {{profile.bio_text}} <br>
                 Joined on: {{profile.join_date}} <br>
             </p> 
+
+            <!--functionality only offered if the user is on their own profile-->
+            {% if user_is_owner %}
             <button type="button"><h3><a href = "{% url 'create_post' %}">Create a post for {{profile.display_name}}</a></h3></button>
             <br>
             <button type="button"><h3><a href="{% url 'update_profile' %}">Update this profile</a></h3></button>
+            {% endif%}
+
         </div>
 
         <img src="{{profile.get_profile_image}}" alt="No image available">
@@ -40,6 +45,17 @@
             {{profile.get_num_following}} following
             </a>
         </h4>
+        {% if user.is_authenticated and not user_is_owner %}
+            {% if user_is_following %}
+            <form method="GET" action="{% url 'delete_follow' profile.pk %}">
+                <button type="submit">Unfollow</button>
+            </form>
+            {% else %}
+            <form method="GET" action="{% url 'follow_profile' profile.pk %}">
+                <button type="submit">Follow</button>
+            </form>
+            {% endif %}
+        {% endif %}
     </div>  
     <div>
         <h3>All posts by {{profile.display_name}}</h3>

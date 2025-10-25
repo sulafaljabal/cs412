@@ -35,5 +35,9 @@ urlpatterns = [
     path('logged_out/', LoggedOutView.as_view(), name='logged_out'),
 
     path('create_profile/', CreateProfileView.as_view(), name='create_profile'),
-
+   
+    path('profile/<int:pk>/follow/', FollowProfileView.as_view(), name='follow_profile'),
+    path('profile/<int:pk>/delete_follow/', DeleteFollowView.as_view(), name='delete_follow'),
+    path('post/<int:pk>/like/', LikePostView.as_view(), name='like_post'),
+    path('post/<int:pk>/delete_like/', DeleteLikeView.as_view(), name='delete_like'),
 ]

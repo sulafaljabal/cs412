@@ -18,11 +18,13 @@
             Uploaded at: {{post.timestamp}}
         </p>
 
+        {% if user.is_authenticated and is_owner %}
         <div>
             <!--Update and delete buttons for post -->
             <button type="button"><a href = "{% url 'update_post' post.pk %}">Update this post</a></button><br>
             <button type="button"><a href ="{% url 'delete_post' post.pk %}">Delete this post</a></button>
         </div>
+        {% endif %}
 
         {% for photo in post.get_all_photos %}
             {% if photo %}
@@ -38,6 +40,19 @@
             {% else %}
                 <h3>0 likes</h3>
             {% endif %}
+
+            {% if user.is_authenticated and not is_owner %}
+                {% if has_liked %}
+                    <form method="GET" action="{% url 'delete_like' post.pk %}">
+                        <button type="submit">Unlike</button>
+                    </form>
+                {% else %}
+                    <form method="GET" action="{% url 'like_post' post.pk %}">
+                        <button type="submit">Like</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+
 
             <h3>Comments</h3>
             {% for comment in post.get_all_comments %}
