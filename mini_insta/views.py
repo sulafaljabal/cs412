@@ -182,7 +182,7 @@ class UpdateProfileView(ProfileRequiredMixin, UpdateView):
 
         profile = self.get_profile()
 
-        return reverse('show_profile', kwargs={'pk': self.pk})
+        return reverse('show_profile', kwargs={'pk': profile.pk})
     #enddef
 
     def get_object(self):
@@ -224,6 +224,7 @@ class UpdatePostView(ProfileRequiredMixin, UpdateView):
         # pk = self.kwargs['pk']
         profile = self.get_profile()
 
+        context['post'] = self.object
         context['profile'] = profile 
         return context 
     #enddef
