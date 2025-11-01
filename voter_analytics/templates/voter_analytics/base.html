@@ -1,0 +1,27 @@
+<!--templates/voter_analytics/base.html
+Sulaf Al Jabal (U78815065) 10/31/25
+File description: base html page used by other templates-->
+
+{% load static %}
+<html>
+    <head>
+        <title>
+            Voters in Newton
+        </title>
+        <link rel="stylesheet" href="{% static 'hw/styles.css' %}">  
+    </head>
+    <body>
+        <!-- <nav>
+            <li> <a href="{% url 'home_page' %}">Home</a></li>
+            <li> <a href="{% url 'about_page' %}">About</a></li>
+        </nav> -->
+
+        <!-- put page specific content here -->
+         {% block content %}
+         {% endblock %}
+
+        <footer>
+            This is the footer<br>
+        </footer>
+    </body>
+</html>

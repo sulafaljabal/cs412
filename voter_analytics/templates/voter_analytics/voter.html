@@ -1,0 +1,86 @@
+<!--templates/voter_analytics/home.html
+Sulaf AL Jabal (U78815065) 10/31/25
+file description:???-->
+
+{% extends 'voter_analytics/base.html' %}
+ 
+{% block content %}
+<h1>Showing all voters</h1>
+
+<div class="container">
+        
+
+    <form action="">
+        <div class="row">
+            {% include "voter_analytics/search.html" %}
+        </div>
+        <a class="buttons" href="{% url 'voters' %}">Clear Filters</a>
+    </form>
+ 
+    <!-- navigation links for different pages of results -->
+    <div class="row">
+        {% if is_paginated %}
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li>
+                    <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span>
+                
+                </li>
+            {% endif %}
+                <li class="">
+                    <span>Page {{ page_obj.number }} of ??.</span>
+                </li>
+            {% if page_obj.has_next %}
+                <li>
+                    <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+                </li>
+            {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+    
+	<!-- table of results -->
+    <div class="row">
+        <table>
+            
+            <tr>
+                <th>First Name, Last Name</th>
+                <th>Date of Birth</th>
+
+                <th>Address</th>
+                <th>Party Affiliation</th>
+                <th>Precint number</th>
+                
+                <th>Zipcode</th>
+                <th>Voted in 2020 state election</th>
+                <th>Voted in 2021 town election</th>
+                <th>Voted in 2021 primary</th>
+                <th>Voted in 2022 general</th>
+                <th>Voted in 2023 town election</th>
+                <th>Voter score</th>
+            </tr>
+    
+            {% for v in voters %}
+            <tr>
+
+                <td>{{v.first_name}} {{v.last_name}}</td>
+                <td>{{v.date_of_birth}}</td>
+                <td>{{v.address_street_number}}, {{v.address_street_name}}, {{v.address_apartment_number}}</td>
+                <td>{{v.party_affiliation}}</td>
+                <td>{{v.precint_number}}</td>
+                <td>{{v.address_zip_code}}</td>
+                <td>{{v.v20state}}</td>
+                <td>{{v.v21town}}</td>
+                <td>{{v.v21primary}}</td>
+                <td>{{v.v22general}}</td>
+                <td>{{v.v23town}}</td>
+                <td>{{v.voter_score}}</td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+ 
+</div>    
+{% endblock %}
+ 
