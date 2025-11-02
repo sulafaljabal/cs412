@@ -1,0 +1,18 @@
+<!--templates/voter_analytics/base.html
+Sulaf Al Jabal (U78815065) 11/1/25
+File description: voter detail html page used to showcase information
+about one voter-->
+{% extends "voter_analytics/base.html" %}
+
+
+{% block content %}
+<h1>Voter Detail</h1>
+<p>
+    <strong>Name</strong> {{voter.first_name}} {{voter.last_name}} <br>
+    <strong>Address</strong> {{voter.address_apartment_number}}, {{voter.address_street_name}}, {{voter.address_street_number}}, {{voter.address_zip_code}}<br>
+    <strong>Date of Birth</strong> {{voter.date_of_birth}}<br>
+    <strong>Date of Registration</strong> {{voter.registration_date}} <br>
+    <strong>Party Affiliation</strong> {{voter.party_affiliation}} <br>
+    <strong>Voter Score</strong> {{voter.voter_score}}
+    </p>
+{% endblock %}

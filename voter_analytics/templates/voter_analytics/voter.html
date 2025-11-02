@@ -10,12 +10,12 @@ file description:???-->
 <div class="container">
         
 
-    <form action="">
+    <!-- <form action=""> -->
         <div class="row">
             {% include "voter_analytics/search.html" %}
         </div>
         <a class="buttons" href="{% url 'voters' %}">Clear Filters</a>
-    </form>
+    <!-- </form> -->
  
     <!-- navigation links for different pages of results -->
     <div class="row">
@@ -23,16 +23,15 @@ file description:???-->
         <ul class="pagination">
             {% if page_obj.has_previous %}
                 <li>
-                    <span><a href="?page={{ page_obj.previous_page_number }}">Previous</a></span>
-                
+                    <span><a href="?{{ request.GET.urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a></span>                
                 </li>
             {% endif %}
                 <li class="">
-                    <span>Page {{ page_obj.number }} of ??.</span>
+                    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
                 </li>
             {% if page_obj.has_next %}
                 <li>
-                    <span><a href="?page={{ page_obj.next_page_number }}">Next</a></span>
+                    <span><a href="?{{ request.GET.urlencode }}&page={{ page_obj.next_page_number }}">Next</a></span>
                 </li>
             {% endif %}
             </ul>
@@ -62,8 +61,11 @@ file description:???-->
     
             {% for v in voters %}
             <tr>
-
-                <td>{{v.first_name}} {{v.last_name}}</td>
+                
+                <td>
+                    <a href = "{% url 'voter' v.pk %}">
+                    {{v.first_name}} {{v.last_name}}</a>
+                </td> 
                 <td>{{v.date_of_birth}}</td>
                 <td>{{v.address_street_number}}, {{v.address_street_name}}, {{v.address_apartment_number}}</td>
                 <td>{{v.party_affiliation}}</td>

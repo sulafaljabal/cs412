@@ -66,7 +66,7 @@ def load_data():
                             date_of_birth = fields[7],
 
                             registration_date = fields[8],
-                            party_affiliation = fields[9],
+                            party_affiliation = fields[9].strip(),
                             precint_number = fields[10],
                         
                             v20state = fields[11].upper() == 'TRUE',

@@ -8,13 +8,13 @@ File description: base html page used by other templates-->
         <title>
             Voters in Newton
         </title>
-        <link rel="stylesheet" href="{% static 'hw/styles.css' %}">  
+        <link rel="stylesheet" href="{% static 'voter_analytics/styles.css' %}">  
     </head>
     <body>
-        <!-- <nav>
-            <li> <a href="{% url 'home_page' %}">Home</a></li>
-            <li> <a href="{% url 'about_page' %}">About</a></li>
-        </nav> -->
+        <nav>
+            <li> <a href="{% url 'voters' %}">Home</a></li>
+            <!-- <li> <a href="{% url 'about_page' %}">About</a></li> -->
+        </nav>
 
         <!-- put page specific content here -->
          {% block content %}

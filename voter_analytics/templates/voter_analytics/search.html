@@ -6,58 +6,69 @@
  
 <table>
 <form action="{% url 'voters' %}">
-                <tr>
-                    <th>Party Affiliation:</th>
-                    <td><input type="text" name="party_affiliation"></td>
 
-                    <th>v20state:</th>
-                    <td><input type="checkbox" name="v20state"></td>
+<tr>
+    <th>v20state:</th>
+    <td><input type="checkbox" name="v20state"></td>
 
-                    <th>v21town:</th>
-                    <td><input type="checkbox" name="v21town"></td>
+    <th>v21town:</th>
+    <td><input type="checkbox" name="v21town"></td>
 
-                    <th>v22general:</th>
-                    <td><input type="checkbox" name="v22general"></td>
+    <th>v21primary:</th>
+    <td><input type="checkbox" name="v21primary"></td>
 
-                    <th>v23town:</th>
-                    <td><input type="checkbox" name="v23town"></td>
+    <th>v22general:</th>
+    <td><input type="checkbox" name="v22general"></td>
 
-                </tr>
+    <th>v23town:</th>
+    <td><input type="checkbox" name="v23town"></td>
+</tr>
 
-                <tr>
-                    <th>Born after:</th>
-                    <td><select name = "min_birth_year" id = "min_birth_year">
-                        <option value = ""></option>
-                        {% for year in birth_years %}
+<tr>
+    <th>Born after:</th>
+    <td><select name = "min_birth_year" id = "min_birth_year">
+        <option value = ""></option>
+        {% for year in birth_years %}
+
+            <option value="{{year}}">{{year}}</option>
+        {% endfor %}
             
-                            <option value="{{year}}">{{year}}</option>
-                        {% endfor %}
-                         
-                    </select></td>
+    </select></td>
 
-                    <th>Born before:</th>
-                    <td><select name = "max_birth_year" id = "max_birth_year">
-                        <option value = ""></option>
-                        {% for year in birth_years %}
-                            <option value="{{year}}">{{year}}</option>
-                        {% endfor %}
-                         
-                    </select></td>
+    <th>Born before:</th>
+    <td><select name = "max_birth_year" id = "max_birth_year">
+        <option value = ""></option>
+        {% for year in birth_years %}
+            <option value="{{year}}">{{year}}</option>
+        {% endfor %}
+            
+    </select></td>
 
-                    <th>Voter score:</th>
-                    <td><select name = "voter_scores">
-                        <option value = '' ></option>
-                        {% for s in voter_scores %}
-                            <option value="{{s}}">{{s}}</option>
-                        {% endfor %}
-                         
-                    </select></td>
-                </tr>
-                <tr>
-                    <td><input type="submit"></td>
-                    <td></td>
-                </tr>
-            </form>
+    <th>Voter score:</th>
+    <td><select name = "voter_score">
+        <option value = "" ></option>
+        {% for s in voter_scores %}
+            <option value="{{s}}">{{s}}</option>
+        {% endfor %}
+            
+    </select></td>
+
+    <th>Party Affiliation:</th>
+    <td><select name = "party_affiliation">
+        <option value = "" ></option>
+        {% for p in party_affiliation %}
+            <option value="{{p}}">{{p}}</option>
+        {% endfor %}
+            
+    </select></td>
+</tr>
+
+<tr>
+    <td><input type="submit"></td>
+    <td></td>
+</tr>
+
+</form>
 
 </table>
  

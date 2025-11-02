@@ -6,7 +6,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.db.models.query import QuerySet
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from . models import *
  
 class VoterListView(ListView):
@@ -25,69 +25,76 @@ class VoterListView(ListView):
         # fields to filter by: party affiliation, minimum and maximum birth date (drop down list by calendar year ), voter score
         # whether or not they voted in certain elections 
         # need to have mixture of filters as well
+        # party = self.request.GET.get('party_affiliation')
         print(self.request.GET)
+
+        request_dict = self.request.GET
+        print(f"Request dictionary: {request_dict}")
+
         if 'party_affiliation' in self.request.GET:
-            party_affiliation = self.request.GET['party_affiliation']
-            if party_affiliation and party_affiliation != "":
-                voters = voters.filter(party_affiliation=party_affiliation.strip())
+            party_affiliation = request_dict['party_affiliation']
+            if party_affiliation and len(party_affiliation)!= 0:
+                print(f"Party affiliation: {party_affiliation}")
+                voters = voters.filter(party_affiliation=party_affiliation)
             #endif
-        if 'v20state' in self.request.GET:
-            v20state = self.request.GET['v20state']
+
+        if 'v20state' in request_dict:
+            v20state = request_dict['v20state']
             if v20state:
                 voters = voters.filter(v20state=True)
             #endif
 
-        if 'v21town' in self.request.GET:
-            v21town = self.request.GET['v21town']
+        if 'v21town' in request_dict:
+            v21town = request_dict['v21town']
             if v21town:
                 voters = voters.filter(v21town=True)
             #endif
         #endif
 
-        if 'v21primary' in self.request.GET:
-            v21primary = self.request.GET['v21primary']
+        if 'v21primary' in request_dict:
+            v21primary = request_dict['v21primary']
             if v21primary:
                 voters = voters.filter(v21primary=True)
             #endif
 
-        if 'v22general' in self.request.GET:
-            v22general = self.request.GET['v22general']
+        if 'v22general' in request_dict:
+            v22general = request_dict['v22general']
             if v22general:
                 voters = voters.filter(v22general=True)
             #endif
         #endif
 
-        if 'v23town' in self.request.GET:
-            v23town = self.request.GET['v23town']
+        if 'v23town' in request_dict:
+            v23town = request_dict['v23town']
             if v23town:
                 voters = voters.filter(v23town=True)
             #endif
         #endif
         
-        if 'voter_score' in self.request.GET:
-            voter_score = self.request.GET['voter_score']
+        if 'voter_score' in request_dict:
+            voter_score = request_dict['voter_score']
             if voter_score != "":
                 voters = voters.filter(voter_score=int(voter_score))
             #endif
         #endif
-        return voters
 
         #date_of_birth__gte=int(min_year)
-        if 'min_birth_year' in self.request.GET:
-            min_birth_year = self.request.GET['min_birth_year']
-            if min_birth_year != "":
-                voters = voters.filter(date_of_birth__gte=int(min_birth_year))
+        if 'min_birth_year' in request_dict:
+            min_birth_year = request_dict['min_birth_year']
+            if min_birth_year and min_birth_year != "":
+                voters = voters.filter(date_of_birth__gte=f"{min_birth_year}-01-01")
             #endif
         #endif
 
-        if 'max_birth_year' in self.request.GET:
-            max_birth_year = self.request.GET['max_birth_year']
-            if max_birth_year != "":
-                voters = voters.filter(date_of_birth__lte=int(max_birth_year))
+        if 'max_birth_year' in request_dict:
+            max_birth_year = request_dict['max_birth_year']
+            if max_birth_year and max_birth_year != "":
+                voters = voters.filter(date_of_birth__lte=f"{max_birth_year}-12-31")
             #endif
             # print(f"Max birth year present? {max_birth_year}")
         #endif
-        
+        print(f"Number of results: {len(voters)}")
+
         return voters
         #
     #enddef get _query set
@@ -101,13 +108,23 @@ class VoterListView(ListView):
         context = super().get_context_data(**kwargs)
         parties = Voter.objects.values_list('party_affiliation', flat=True).distinct().order_by('party_affiliation') 
         # for drop down
-        party_affiliation = []
+        party_affiliation_list = []
+
         for p in parties:
             if p: 
-                party_affiliation.append(p.strip()) # in case of any whitespace
+                party_affiliation_list.append(p) # in case of any whitespace
             #endif
         #endfor 
-        context['party_affiliation'] = party_affiliation
+        print(f"Party affiliation list: {party_affiliation_list}")
+        context['party_affiliation'] = party_affiliation_list
         context['birth_years'] = range(1900, 2025)
-        context['voter_scores'] = range(0,6)
+        context['voter_score'] = range(0,6)
         return context
+#endc;ass
+
+class VoterDetailView(DetailView):
+
+    template_name = 'voter_analytics/voter_detail.html'
+    model = Voter
+    context_object_name = 'voter'
+
