@@ -1,4 +1,4 @@
-<!--templates/voter_analytics/base.html
+<!--templates/voter_analytics/voter_dtail.html
 Sulaf Al Jabal (U78815065) 11/1/25
 File description: voter detail html page used to showcase information
 about one voter-->
@@ -7,12 +7,21 @@ about one voter-->
 
 {% block content %}
 <h1>Voter Detail</h1>
-<p>
+<div>
     <strong>Name</strong> {{voter.first_name}} {{voter.last_name}} <br>
-    <strong>Address</strong> {{voter.address_apartment_number}}, {{voter.address_street_name}}, {{voter.address_street_number}}, {{voter.address_zip_code}}<br>
+    <a href="{{address}}">
+        <strong>Address:</strong> {{voter.address_apartment_number}}, {{voter.address_street_name}}, {{voter.address_street_number}}, {{voter.address_zip_code}}<br>
+    </a>
     <strong>Date of Birth</strong> {{voter.date_of_birth}}<br>
     <strong>Date of Registration</strong> {{voter.registration_date}} <br>
     <strong>Party Affiliation</strong> {{voter.party_affiliation}} <br>
-    <strong>Voter Score</strong> {{voter.voter_score}}
-    </p>
+    <strong>Voter Score</strong> {{voter.voter_score}} <br>
+    <strong>v20state?</strong> {{voter.v20state}} <br>
+    <strong>v21town?</strong> {{voter.v21town}} <br>
+    <strong>v21primary?</strong> {{voter.v21primary}} <br>
+    <strong>v22general?</strong> {{voter.v22general}} <br>
+    <strong>v23town?</strong> {{voter.v23town}} <br>
+</div>
 {% endblock %}
+
+<!-- https://www.google.com/maps/place/91+Westland+Ave,+Boston,+MA+02115/ -->

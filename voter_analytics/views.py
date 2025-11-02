@@ -128,3 +128,10 @@ class VoterDetailView(DetailView):
     model = Voter
     context_object_name = 'voter'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        voter = self.object
+        link = f"https://www.google.com/maps/search/?api=1&query={voter.address_street_number}+{voter.address_street_name.replace(" ", "+")}+{voter.address_apartment_number}+Newton+MA+{voter.address_zip_code}"
+        print(f"Link: {link}")
+        context['address'] = link
+        return context
