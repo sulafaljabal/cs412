@@ -232,30 +232,6 @@ class GraphsListView(ListView):
         context = super().get_context_data(**kwargs)
         voters = self.get_queryset()
 
-        # dictionary of years
-        birth_years = {k: 0 for k in range(1900,2025)}
-        voter_scores = range(0,6)
-
-        # order by date of birth
-        # Voter.objects.filter(date_of_birth__gte="1990-01-01")
-        for i in voters:
-            # goes through every voter in already filtered voters list and adds them to their respective spot in the birth year dictionary
-            birth_years[(i.date_of_birth).year] += 1
-        #endfor
-        fig = go.Bar(x=list(birth_years.keys()), y = list(birth_years.values()))
-        title_text = f"Voters distribution by Year of Birth (n = {len(voters)})"
-        bar_chart = plot({"data": [fig], 
-                                         "layout_title_text": title_text,
-                                         }, auto_open=False, output_type="div",               
-                                         )
-                                        
-        context['bar_chart'] = bar_chart
-        # end of bar chart logic
-
-        # start of pie chart logic
-
-        # end of pie chart logic 
-        
         parties = Voter.objects.values_list('party_affiliation', flat=True).distinct().order_by('party_affiliation') 
         # for drop down
         party_affiliation_list = []
@@ -269,6 +245,68 @@ class GraphsListView(ListView):
         context['party_affiliation'] = party_affiliation_list
         context['birth_years'] = range(1900, 2025)
         context['voter_score'] = range(0,6)
+
+        # dictionary of for plotting purposes
+        birth_years_dict = {k: 0 for k in range(1900,2025)}
+        party_affiliation_dict = {k:0 for k in party_affiliation_list}
+        elections_dict = {
+            'v20state': 0,
+            'v21town': 0,
+            'v21primary':0,
+            'v22general':0,
+            'v23town':0
+        }
+
+        voter_scores = range(0,6)
+
+        # order by date of birth
+        # Voter.objects.filter(date_of_birth__gte="1990-01-01")
+        for i in voters:
+            # goes through every voter in already filtered voters list and adds them to their respective spot in the birth year dictionary
+            birth_years_dict[(i.date_of_birth).year] += 1
+            party_affiliation_dict[i.party_affiliation] += 1
+
+            # true becomes +=1, false becomes += 0
+            elections_dict['v20state'] += i.v20state
+            elections_dict['v21town'] += i.v21town
+            elections_dict['v21primary'] += i.v21primary
+            elections_dict['v22general'] += i.v22general
+            elections_dict['v23town'] += i.v23town
+        #endfor
+
+        # start of bar chart logic
+        fig = go.Bar(x=list(birth_years_dict.keys()), y = list(birth_years_dict.values()))
+        title_text = f"Voters distribution by Year of Birth (n = {len(voters)})"
+        bar_chart = plot({"data": [fig], 
+                                         "layout_title_text": title_text,
+                                         }, auto_open=False, output_type="div",               
+                                         )
+                                        
+        context['bar_chart_year'] = bar_chart
+        # end of bar chart logic
+
+        # start of pie chart logic
+        fig = go.Pie(labels=list(party_affiliation_dict.keys()), values=list(party_affiliation_dict.values())) 
+        title_text = f"Voter distribution by Party affiliation (n = {len(voters)})"
+        pie_chart = plot({"data": [fig], 
+                                         "layout_title_text": title_text,
+                                         }, 
+                                         auto_open=False, 
+                                         output_type="div")
+        context['pie_chart'] = pie_chart
+        # end of pie chart logic 
+
+        # start of elections bar chart logic
+        fig = go.Bar(x=list(elections_dict.keys()), y = list(elections_dict.values()))
+        title_text = f"Voter Count by Election(n = {len(voters)})"
+        bar_chart_election = plot({"data": [fig], 
+                                         "layout_title_text": title_text,
+                                         }, auto_open=False, output_type="div",               
+                                         )
+                                        
+        context['bar_chart_election'] = bar_chart_election 
+        # end of elections bar chart logic
+
         return context
         # voters_by_birth = [v.]
 
