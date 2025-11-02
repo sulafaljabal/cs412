@@ -8,13 +8,9 @@ from django.db import models
 
 class Voter(models.Model):
     '''
-    Store/represent the data from one runner at the Chicago Marathon 2023.
-    BIB,First Name,Last Name,CTZ,City,State,Gender,Division,
-    Place Overall,Place Gender,Place Division,Start TOD,Finish TOD,Finish,HALF1,HALF2
+    Store/represent the data about Newton, MA voters
     '''
 
-    # identification
-    # voter_id = models.TextField() # this is themprimary key
     
     last_name = models.TextField()
     first_name = models.TextField()
@@ -38,6 +34,7 @@ class Voter(models.Model):
         '''Return a string representation of this model instance.'''
         return f'{self.last_name}, {self.first_name}, {self.party_affiliation},{self.voter_score}'
     #end string representation
+#end class
 
         
 def load_data():
@@ -50,13 +47,12 @@ def load_data():
 
 
     for line in f:
-        line = line.strip()
-        fields = line.split(',')
+        line = line.strip() # removing whitespace
+        fields = line.split(',') # getting fields
     
         try:
-            # create a new instance of Result object with this record from CSV
             voter = Voter(
-                            last_name=fields[1],
+                            last_name=fields[1], # voter_id field not used
                             first_name=fields[2],
                             address_street_number = fields[3],
                             address_street_name = fields[4],
@@ -80,9 +76,9 @@ def load_data():
 
 
             voter.save() # commit to database
-            # print(f'Created result: {voter}')
             
-        except Exception as e:
+        except Exception as e: # useful
             print(f"Skipping line due to exception: {e}")
     
-    print(f'Done. Created {len(Voter.objects.all())} Voters.')
+    print(f'Done. Created {len(Voter.objects.all())} Voters.') # debugging
+#enddef

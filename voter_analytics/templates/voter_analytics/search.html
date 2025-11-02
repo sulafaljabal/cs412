@@ -1,7 +1,6 @@
 <!-- /templates/voter_analytics/search.html 
  Sulaf Al Jabal (U78815065) 10/31/25
- file description: html template for searching-->
-<h1>Search Form</h1>
+ file description: html template for searching, imbedded into voter.html page-->
  
  
 <table>
@@ -27,7 +26,7 @@
 <tr>
     <th>Born after:</th>
     <td><select name = "min_birth_year" id = "min_birth_year">
-        <option value = ""></option>
+        <option value = ""></option> <!--default value specified instead of 1900-->
         {% for year in birth_years %}
 
             <option value="{{year}}">{{year}}</option>

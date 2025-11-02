@@ -1,6 +1,6 @@
-<!--templates/voter_analytics/home.html
+<!--templates/voter_analytics/voter.html
 Sulaf AL Jabal (U78815065) 10/31/25
-file description:???-->
+file description: html template to display all records of voter, contains search logic that's defined in another html file-->
 
 {% extends 'voter_analytics/base.html' %}
  
@@ -9,20 +9,16 @@ file description:???-->
 
 <div class="container">
         
-
-    <!-- <form action=""> -->
         <div class="row">
             {% include "voter_analytics/search.html" %}
         </div>
         <a class="buttons" href="{% url 'voters' %}">Clear Filters</a>
-    <!-- </form> -->
  
-    <!-- navigation links for different pages of results -->
     <div class="row">
         {% if is_paginated %}
         <ul class="pagination">
             {% if page_obj.has_previous %}
-                <li>
+                <li> <!--keeps search querires/url containing search queries across pages -->
                     <span><a href="?{{ request.GET.urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a></span>                
                 </li>
             {% endif %}
@@ -63,7 +59,7 @@ file description:???-->
             <tr>
                 
                 <td>
-                    <a href = "{% url 'voter' v.pk %}">
+                    <a href = "{% url 'voter' v.pk %}"> <!--link to individual detail view-->
                     {{v.first_name}} {{v.last_name}}</a>
                 </td> 
                 <td>{{v.date_of_birth}}</td>

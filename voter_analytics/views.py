@@ -22,27 +22,29 @@ class VoterListView(ListView):
     paginate_by = 100
  
     def get_queryset(self):
+        """filtering logic from users"""
 
-        voters = Voter.objects.all() # for now?
+        voters = Voter.objects.all() 
         
         # fields to filter by: party affiliation, minimum and maximum birth date (drop down list by calendar year ), voter score
         # whether or not they voted in certain elections 
         # need to have mixture of filters as well
         # party = self.request.GET.get('party_affiliation')
+
         print(self.request.GET)
 
-        request_dict = self.request.GET
+        request_dict = self.request.GET # no need to use self.request.GET multiple times
         print(f"Request dictionary: {request_dict}")
 
-        if 'party_affiliation' in self.request.GET:
+        if 'party_affiliation' in request_dict:
             party_affiliation = request_dict['party_affiliation']
-            if party_affiliation and len(party_affiliation)!= 0:
-                print(f"Party affiliation: {party_affiliation}")
+            if party_affiliation and len(party_affiliation)!= 0: # dropdown box specifies default value of ''
+                # print(f"Party affiliation: {party_affiliation}")
                 voters = voters.filter(party_affiliation=party_affiliation)
             #endif
 
         if 'v20state' in request_dict:
-            v20state = request_dict['v20state']
+            v20state = request_dict['v20state'] # checkbockes don't suffer from the same issue
             if v20state:
                 voters = voters.filter(v20state=True)
             #endif
@@ -102,9 +104,7 @@ class VoterListView(ListView):
         #
     #enddef get _query set
 
-    # get context data - need to add party affiliation, all individual 5 elections and 
-    # voter scores (range)
-    # birth years (range)
+
     def get_context_data(self, **kwargs):
         """ adding birth years, voter score, and party affiliations tp context object"""
 
@@ -126,25 +126,29 @@ class VoterListView(ListView):
 #endc;ass
 
 class VoterDetailView(DetailView):
+    """Detail view class instance to showcase information about individual voter"""
 
     template_name = 'voter_analytics/voter_detail.html'
     model = Voter
     context_object_name = 'voter'
 
     def get_context_data(self, **kwargs):
+        """overriding context dictionary to add google maps link"""
         context = super().get_context_data(**kwargs)
         voter = self.object
         link = f"https://www.google.com/maps/search/?api=1&query={voter.address_street_number}+{voter.address_street_name.replace(" ", "+")}+{voter.address_apartment_number}+Newton+MA+{voter.address_zip_code}"
         print(f"Link: {link}")
-        context['address'] = link
+        context['address'] = link 
         return context
 
 class GraphsListView(ListView):
+    """ list view to showcase all graphs based on user filter choices"""
     template_name= "voter_analytics/graphs.html"
     model = Voter 
     context_object_name = 'v'
 
     def get_queryset(self):
+        """ returning queryset based on user's filter choices"""
 
         voters = Voter.objects.all() # for now?
         
@@ -229,6 +233,7 @@ class GraphsListView(ListView):
     #enddef get _query set
 
     def get_context_data(self, **kwargs):
+        """overriding context dictionary to add charts"""
         context = super().get_context_data(**kwargs)
         voters = self.get_queryset()
 
@@ -308,5 +313,4 @@ class GraphsListView(ListView):
         # end of elections bar chart logic
 
         return context
-        # voters_by_birth = [v.]
 

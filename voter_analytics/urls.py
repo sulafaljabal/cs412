@@ -7,13 +7,12 @@ from django.urls import path
 from django.conf import settings 
 
 from.views import * 
-# from django.contrib.auth import views as auth_views ##new
 
-# URL patterns specific to the quotes app
+# URL patterns specific to the voter_analytics app
 
 urlpatterns = [
-    path(r'', VoterListView.as_view(), name="voters"),
-    path('voter/<int:pk>/', VoterDetailView.as_view(), name="voter"),
-    path('graphs', GraphsListView.as_view(), name="graphs"),
+    path(r'', VoterListView.as_view(), name="voters"), # main page
+    path('voter/<int:pk>/', VoterDetailView.as_view(), name="voter"), # individual voter pages
+    path('graphs', GraphsListView.as_view(), name="graphs"), # graphs page 
 
 ]

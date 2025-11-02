@@ -9,7 +9,7 @@ about one voter-->
 <h1>Voter Detail</h1>
 <div>
     <strong>Name</strong> {{voter.first_name}} {{voter.last_name}} <br>
-    <a href="{{address}}">
+    <a href="{{address}}" target="_blank">
         <strong>Address:</strong> {{voter.address_apartment_number}}, {{voter.address_street_name}}, {{voter.address_street_number}}, {{voter.address_zip_code}}<br>
     </a>
     <strong>Date of Birth</strong> {{voter.date_of_birth}}<br>
@@ -24,4 +24,3 @@ about one voter-->
 </div>
 {% endblock %}
 
-<!-- https://www.google.com/maps/place/91+Westland+Ave,+Boston,+MA+02115/ -->
