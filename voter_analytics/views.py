@@ -136,8 +136,7 @@ class VoterDetailView(DetailView):
         """overriding context dictionary to add google maps link"""
         context = super().get_context_data(**kwargs)
         voter = self.object
-        link = f"https://www.google.com/maps/search/?api=1&query={voter.address_street_number}+{voter.address_street_name.replace(" ", "+")}+{voter.address_apartment_number}+Newton+MA+{voter.address_zip_code}"
-        print(f"Link: {link}")
+        link = f"https://www.google.com/maps/search/?api=1&query={voter.address_street_number}+{voter.address_street_name.replace(' ', '+')}+{voter.address_apartment_number}+Newton+MA+{voter.address_zip_code}"
         context['address'] = link 
         return context
 
