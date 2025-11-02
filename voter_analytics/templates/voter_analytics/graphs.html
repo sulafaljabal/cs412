@@ -1,0 +1,24 @@
+<!-- templates/voter_analytics/graphs.html
+ Sulaf Al Jabal (U78815065) 11/1/2025 
+ File description: html template to showcase voter graphs based on filters-->
+
+ 
+<!-- # show the pie chart here: -->
+{% extends "voter_analytics/base.html "%}
+
+{% block content %}
+<div class="row">
+    {% include "voter_analytics/graphs_search.html" %}
+</div>
+<a class="buttons" href="{% url 'graphs' %}">Clear Filters</a>
+
+<!-- <a class="buttons" href="{% url 'graphs' %}">Clear Filters</a> -->
+
+<div class="container">
+    <div class="row">
+        <!-- safe: render the HTML rather than display the HTML as text -->
+        {{bar_chart|safe}} 
+    </div>
+</div>
+ 
+{% endblock %}
