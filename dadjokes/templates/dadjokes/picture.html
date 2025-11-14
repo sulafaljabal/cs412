@@ -7,7 +7,7 @@ File description: html template responsible showcasing information about a parti
 {% block content %}
     <img src="{{ picture.image_url }}" alt="Image submitted by {{picture.name}}" width="200"> <br>
     <p>Picture submitted by <strong>{{picture.name}}</strong><br>Posted on: {{picture.timestamp}} <br>
-        API information for this <a href = "{% url 'picture_api' picture.pk %}">picture</a>
+        <a href = "{% url 'picture_api' picture.pk %}">API</a>
 
     </p>
 
