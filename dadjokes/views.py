@@ -3,7 +3,6 @@
 # File description: defining all the views within the dadjokes application
 
 from django.shortcuts import render
-# from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 import random 
 
@@ -53,4 +52,53 @@ class PictureDetailView(DetailView):
     template_name = "dadjokes/picture.html"
     context_object_name = "picture"
     model = Picture 
+#endclass
+
+
+### API Views ###
+
+
+class JokeListAPIView(generics.ListCreateAPIView):
+    """ API returns information about all jokes"""
+    queryset = Joke.objects.all()
+    serializer_class = JokeSerializer
+#endclass
+
+class PictureListAPIView(generics.ListAPIView):
+    """ API returns information about all picture """
+    queryset = Picture.objects.all()
+    serializer_class = PictureSerializer
+#endclass
+
+
+class RandomJokeAPIView(generics.RetrieveAPIView):
+    """ API view returns information about a random joke"""
+
+    serializer_class = JokeSerializer
+    def get_object(self):
+        """ overriding get_object method to pick random joke"""
+        queryset = random.choice(Joke.objects.all())
+        return queryset
+#endclass
+
+class JokeRetrieveAPIView(generics.RetrieveAPIView):
+    """ API returns information about a specific joke given its primary key """
+    serializer_class = JokeSerializer
+    queryset= Joke.objects.all()
+#endclass
+
+class PictureRetrieveAPIView(generics.RetrieveAPIView):
+    """ API returns information about a particular image given its primary key"""
+    serializer_class = PictureSerializer
+    queryset = Picture.objects.all()
+#endclass
+
+class RandomPictureAPIView(generics.RetrieveAPIView):
+    """ API view returns information about a random picture"""
+
+    serializer_class = PictureSerializer
+    def get_object(self):
+        """ overriding get_object method to pick random picture """
+        queryset = random.choice(Picture.objects.all())
+        return queryset
 #endclass

@@ -7,6 +7,8 @@ File description: html template responsible for showcasing a single joke by its 
 {% block content %}
 
 <strong>{{joke.text}}</strong> <br>
-<p>Joke submitted by {{joke.name}} <br>Posted on: {{joke.timestamp}}</p>
+<p>Joke submitted by <strong>{{joke.name}}</strong> <br>Posted on: {{joke.timestamp}} <br>
+    API for this <a href = "{% url 'joke_api' joke.pk %}">joke</a>
+</p>
 
 {% endblock %}

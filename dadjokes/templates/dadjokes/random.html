@@ -9,13 +9,17 @@ Uses two template to showcase random joke and picture since two separate view ha
 {% block content %}
 <!--insert joke and picture -->
 <h2>Joke of the day</h2>
-    <p>
-        {{joke.text}}<br>
-        Submitted by {{joke.name}} <br>
-        {{joke.timestamp}}
+    <a href = "{% url 'joke' joke.pk %}">
+        <p>
+            {{joke.text}}<br>
+            Submitted by {{joke.name}} <br>
+            {{joke.timestamp}}
 
-    </p>
+        </p>
+    </a>
 <h2>Picture</h2>
-    <img src="{{ picture.image_url }}" alt="Image submitted by {{picture.name}}" width="200"> <br>
-    Picture submitted by {{joke.name}} <br> {{joke.timestamp}}
+    <a href = "{% url 'picture' picture.pk %}">
+        <img src="{{ picture.image_url }}" alt="Image submitted by {{picture.name}}" width="200"> <br>
+        Picture submitted by {{joke.name}} <br> {{joke.timestamp}}
+    </a>
 {% endblock %}

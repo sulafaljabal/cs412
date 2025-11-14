@@ -7,10 +7,14 @@
 {% block content %}
 <p>
     {% for p in pictures %}
-        <img src = "{}" alt = "No image available" > <br>
-        {{p.name}} <br>
-        {{p.timestamp}}
+        <a href = "{% url 'picture' p.pk %}">
+            <img src = "{{p.image_url}}" alt = "No image available"  width="200"> <br>
+            Picture posted by {{p.name}} <br>
+            {{p.timestamp}}<br>
+        </a>
     {% endfor %}
+    <a href = "{% url 'picture_list_api' %}">API info for all pictures</a>
+
 
 </p>
 {% endblock %}

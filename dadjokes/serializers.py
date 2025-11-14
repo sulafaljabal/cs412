@@ -9,7 +9,7 @@ from .models import *
 class JokeSerializer(serializers.ModelSerializer):
     """
     serializer for the Joke model
-    Specify which model and which fields to send in the API
+    Users can also create jokes using this
     """
 
     class Meta:
@@ -18,27 +18,15 @@ class JokeSerializer(serializers.ModelSerializer):
         fields = [ 'name', 'text', 'timestamp']
     #end Meta 
 
-    # add methods to customize the Create/eRead/Update/Delete operations
-    # if you have multiple models, you create one seralizer model for each
 
-
-    # def create(self, validated_data):
-    #     """ override the superclass method that handles object creation """
-    #     print(f"ArticleSerializer.create, validated_data= {validated_data}")
-
-    #     validated_data['user'] = User.objects.first()
-    #     # do the create and save all together
-    #     return Article.objects.create(**validated_data) 
-
-    #enddef
 #end Joke serializer
 
 class PictureSerializer(serializers.ModelSerializer):
-    """???"""
+    """Serializer for Picture model. 
+    Users CANNOT create new pictures using"""
+    
     class Meta:
         model = Picture 
         fields = ['timestamp', 'image_url', 'name']
     #end meta 
-
-    # might need a create function...
 #endclass
