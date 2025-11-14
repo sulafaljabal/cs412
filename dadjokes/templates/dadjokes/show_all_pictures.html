@@ -1,0 +1,16 @@
+<!-- templates/dadjokes/show_all_pictures.html
+ Sulaf Al Jabal (U78815065) 11/13/2025
+ File description: html template dedicated to showing all pictures-->
+
+{% extends 'dadjokes/base.html'%}
+
+{% block content %}
+<p>
+    {% for p in pictures %}
+        <img src = "{}" alt = "No image available" > <br>
+        {{p.name}} <br>
+        {{p.timestamp}}
+    {% endfor %}
+
+</p>
+{% endblock %}

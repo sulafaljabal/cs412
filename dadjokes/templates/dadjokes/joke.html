@@ -1,0 +1,12 @@
+<!--templates/dadjokes/joke.html
+Sulaf Al Jabal (U78815065) 11/13/2025
+File description: html template responsible for showcasing a single joke by its primary key -->
+
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+
+<strong>{{joke.text}}</strong> <br>
+<p>Joke submitted by {{joke.name}} <br>Posted on: {{joke.timestamp}}</p>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+<!-- templates/dadjokes/show_all_jokes.html
+ Sulaf Al Jabal (U78815065) 11/11/2025
+ File description: html template to show all the jokes-->
+
+{% extends 'dadjokes/base.html' %}
+
+{% block content %}
+    {% for j in jokes %}
+    <p>
+        {{j.text}} <br>
+        {{j.name}} <br>
+        {{j.timestamp}}
+    </p>
+    {% endfor %}
+{% endblock %}

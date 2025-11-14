@@ -1,0 +1,23 @@
+<!-- templates/dadjokes/base.html
+ Sulaf Al Jabal (U78815065) 11/11/2025 
+ File description: base template-->
+
+{% load static %}
+<html>
+    <head>
+        <title>Dad Jokes</title>
+        <link rel="stylesheet"  href="{% static 'dadjokes/styles.css' %}">
+
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="{% url 'random' %}">Home</a></li>
+                <li><a href="{% url 'jokes' %}">Jokes</a></li>
+                <li><a href="{% url 'pictures' %}">Pictures</a></li>
+            </ul>
+        </nav>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>
