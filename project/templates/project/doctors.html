@@ -1,0 +1,16 @@
+<!--templates/project/doctors.html
+Sulaf Al Jabal (U78815065) 11/24/25
+File description: html template to showcase all records of Doctors-->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h2>Showing all doctors</h2>
+{% for d in doctors %}
+    <a href = "{% url 'doctor' d.pk %}"> <!--link to individual doctor detail view-->
+        <p>{{d.firstName}} {{d.lastName}}</p>
+        
+    </a>
+{% endfor %}
+{% endblock %}

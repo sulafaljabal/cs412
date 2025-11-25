@@ -1,0 +1,17 @@
+<!--templates/project/nurses.html
+Sulaf Al Jabal (U78815065) 11/24/25
+File description: html template to showcase all records of Nurses-->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h2>Showing all nurses</h2>
+{% for n in nurses %}
+    <a href = "{% url 'nurse' n.pk %}"> <!--link to individual patient detail view-->
+        <p>{{n.firstName}} {{n.lastName}}</p>
+        
+    </a>
+{% endfor %}
+
+{% endblock %}

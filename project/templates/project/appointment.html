@@ -1,0 +1,32 @@
+<!-- project/appointment.html
+ Sulaf Al Jabal (U78815065) 11/24/25
+ file description: html template dedicated to showing details about a certain Appointment record-
+ Contains their information and their past appointments (need to figure that part out)-->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h2>Patient: {{appointment.patient.firstName}} {{appointment.patient.middleName}} {{appointment.patient.lastName}}</h2>
+{% if appointment.patient.picture %}    
+    <img src="{{appointment.patient.picture.url}}">
+{% else %}
+    <img src="../../../media/Default_pfp.jpg" alt="No picture associated with this patient" width="200">
+{% endif %}
+<br>
+
+Doctor(s) responsible:
+{% if appointment.appointmentType == 'NA' %}
+    No doctors, this is a nurse only appointment
+{% else %}
+    {% for d in appointment.doctors %}
+        <li>{{d.firstName}} {{d.lastName}}</li> <br>
+    {% endfor %}
+{% endif %}
+<br>
+Nurse(s) responsible:
+{% for n in appointment.nurses %}
+    <li>{{n.firstName}} {{n.lastName}}</li><br>
+{% endfor %}
+
+{% endblock %}

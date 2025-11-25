@@ -1,0 +1,77 @@
+<!--templates/project/patients.html
+Sulaf Al Jabal (U78815065) 11/24/25
+File description: html template to showcase all records of patients-->
+
+{% extends 'project/base.html' %}
+ 
+{% block content %}
+<h1>Showing all Patient records</h1>
+
+<div class="container">
+        
+        <div class="row">
+            {% include "project/patient_search.html" %} <!-- splitting query search page and showing records-->
+        </div>
+        <a class="buttons" href="{% url 'patients' %}">Clear Filters</a>
+ 
+    <div class="row">
+        {% if is_paginated %}
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li> <!--keeps search querires/url containing search queries across pages -->
+                    <span><a href="?{{ request.GET.urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a></span>                
+                </li>
+            {% endif %}
+                <li class="">
+                    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+                </li>
+            {% if page_obj.has_next %}
+                <li>
+                    <span><a href="?{{ request.GET.urlencode }}&page={{ page_obj.next_page_number }}">Next</a></span>
+                </li>
+            {% endif %}
+            </ul>
+        {% endif %}
+    </div>
+    
+	<!-- table of results -->
+    <div class="row">
+        <table>
+            
+            <tr>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Date of Birth</th>
+                <th>Age</th>
+                <th>Is Adult?</th>
+                <th>Primary Care Doctor</th>
+                <th>Address</th>
+
+            </tr>
+    
+            {% for p in patients %}
+            <tr>
+                
+                <td>
+                    <a href = "{% url 'patient' p.pk %}"> <!--link to individual patient detail view-->
+                    {{p.lastName}}</a>
+                </td> 
+                <td>{{p.firstName}}</td>
+                <td>{{p.middleName}}</td>
+                <td>{{p.DOB}}</td>
+                <td>{{p.age}}</td>
+                <td>{{p.isAdult}}</td>
+                <td>{{p.primaryCareDoctor}}</td>
+                <td>{{p.address}}</td>
+            
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+ 
+</div>    
+{% endblock %}
+ 
+

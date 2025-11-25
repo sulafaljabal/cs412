@@ -1,0 +1,46 @@
+<!-- /templates/project/search.html 
+ Sulaf Al Jabal (U78815065) 11/24/25
+ file description: html template for searching, imbedded into project/patients.html page-->
+ 
+ 
+<table>
+<form action="{% url 'patients' %}">
+
+<tr>
+    <th>Is adult?:</th>
+    <td><input type="checkbox" name="isAdult"></td>
+
+</tr>
+
+<tr>
+    <th>Born after:</th>
+    <td><select name = "min_birth_year" id = "min_birth_year">
+        <option value = ""></option> <!--default value specified instead of 1900-->
+        {% for year in birth_years %}
+
+            <option value="{{year}}">{{year}}</option>
+        {% endfor %}
+            
+    </select></td>
+
+    <th>Born before:</th>
+    <td><select name = "max_birth_year" id = "max_birth_year">
+        <option value = ""></option>
+        {% for year in birth_years %}
+            <option value="{{year}}">{{year}}</option>
+        {% endfor %}
+            
+    </select></td>
+
+
+</tr>
+
+<tr>
+    <td><input type="submit"></td>
+    <td></td>
+</tr>
+
+</form>
+
+</table>
+ 

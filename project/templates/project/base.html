@@ -1,0 +1,19 @@
+<!--templates/project/base.html
+Sulaf Al Jabal (U78815065) 11/24/25
+File description: base html template for final project
+There will be multiple base files depending on whether user is a doctor/nurse or patient (or even admin person)-->
+
+<html>
+    <title>Hospital Scheduling Application</title>
+    <body>
+        <nav>
+            <button type="button"><strong><a href="{% url 'patients' %}">View All Patients</a></strong> </button>
+            <button type="button"><strong><a href="{% url 'doctors' %}">View All Doctors</a></strong> </button>
+            <button type="button"><strong><a href="{% url 'nurses' %}">View All Nurses</a></strong> </button>
+            <button type="button"><strong><a href="{% url 'appointments' %}">View All Appointments</a></strong> </button>
+
+        </nav>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

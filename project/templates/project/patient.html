@@ -1,0 +1,24 @@
+<!-- project/patient.html
+ Sulaf Al Jabal (U78815065) 11/24/25
+ file description: html template dedicated to showing details about a certain Patient record-
+ Contains their information and their past appointments (need to figure that part out)-->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h2>Patient: {{patient.firstName}} {{patient.middleName}} {{patient.lastName}}</h2>
+{% if patient.picture %}    
+    <img src="{{patient.picture.url}}">
+{% else %}
+    <img src="../../../media/Default_pfp.jpg" alt="No picture associated with this patient" width="200">
+{% endif %}
+
+<p>Address: {{patient.address}}<br>
+DOB: {{patient.DOB}} <br>
+Age: {{patient.age}} <br>
+Is adult? {{patient.isAdult}}
+
+Primary Care Doctor?: {{patient.getPrimaryCareDoctor}}</p> <!-- either no or name of doctor, need a method for this-->
+
+{% endblock %}

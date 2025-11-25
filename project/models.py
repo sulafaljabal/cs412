@@ -14,6 +14,8 @@ class Patient(models.Model):
     middleName = models.TextField(blank=True)
     DOB = models.DateField(auto_now=False)
     primaryCareDoctor = models.ForeignKey("Doctor", on_delete=models.CASCADE, blank=True, null=True)
+    address = models.TextField(blank=True)
+    picture = models.ImageField(blank=True)
 
     @property
     def age(self):
@@ -40,29 +42,48 @@ class Patient(models.Model):
         """ Returning string representation of Patient object """
         pcd = 'No' if self.primaryCareDoctor == None else f"{self.primaryCareDoctor.lastName}, {self.primaryCareDoctor.firstName}"
         return f"{self.lastName}; {self.firstName}, {self.middleName} |\nDOB: {self.DOB} | {self.isAdult} | PC Doc: {pcd}"
+    #enddef
+
+    def getPrimaryCareDoctor(self):
+        """ Returns name of primary care doctor associated with a Patient record or no if this is blank"""
+        if self.primaryCareDoctor == None:
+            return "no"
+        return self.primaryCareDoctor
+    #enddef
+
 #endclass
 
 class Doctor(models.Model):
     """ Definition of Doctor model """
     firstName = models.TextField(blank=True)
     lastName = models.TextField(blank=True)
+    specialty = models.TextField(blank=True) # this might need to change later for Doctor search capabilities
+    picture = models.ImageField(blank=True)
 
     def __str__(self):
         """ Returning string representation of Doctor object. 
         This will need to change, not sure what attributes are important here. Maybe start with specialty?"""
         return f"D: {self.lastName}, {self.firstName}"
     #enddef
+
 #endclass
 
 class Nurse(models.Model):
     """ Definition of Nurse model """
     firstName = models.TextField(blank=True)
     lastName = models.TextField(blank=True)
+    picture = models.ImageField(blank=True)
+
 
     def __str__(self):
         """ Returning string representation of Nurse object. Similar issue to Doctor object"""
         return f"N: {self.lastName}, {self.firstName}"
     #enddef
+
+    def getPicture(self):
+        if self.picture == None:
+            return 'media\Default_pfp.jpg'.url
+        return self.picture.url
 #endclass
 
 class Appointment(models.Model):
@@ -70,10 +91,6 @@ class Appointment(models.Model):
     Attributes:
     patient: primary key of patient
     dateTime: Date and Time of appointment
-    headDoctor: primary key of head Doctor responsible for appointment
-    otherDoctors: list of primary keys of other Doctors who will be present for this appointment. This can be blank. Option for multiple other doctors is for operations 
-    headNurse: primary key of head Nurse on this appointment. For routine checkups and smaller procedures the head nurse might be the only nurse 
-    otherNurses: list of primary keys of other Nurses who will be present at the appointment. Larger procedures, such as operations, might need multiple nurses on hand.
     problem: text field with name of problem
     problemDescription: text field with description of the wider patient ailment
     appointmentType: char field. Defined options of appointment types. This serves mostly as a shorthand description of the appointment type.
@@ -97,24 +114,46 @@ class Appointment(models.Model):
     # this is set at a certain time for a date in the future, so it can't make use of auto_now
     patient = models.ForeignKey("Patient", on_delete=models.CASCADE)
     dateTime = models.DateTimeField(auto_now=False)
-    headDoctor = models.ForeignKey(
-        Doctor, 
-        on_delete=models.CASCADE,
-        related_name='head_appointments_doctor') # lets me call doctor.head_appointments.all()
-    otherDoctors = models.ManyToManyField(
-        Doctor,
-        related_name='other_appointments_doctor', # lets me call doctor.other_appointments.all()
-        blank=True
-    )
-    headNurse = models.ForeignKey(
-        Nurse, 
-        related_name='head_appointments_nurse',
-        on_delete=models.CASCADE)
-    otherNurses = models.ManyToManyField(
-        Nurse,
-        blank=True,
-        related_name='other_appointments_nurse'
-    )
     problem = models.TextField() # main description of problem
     problemDescription = models.TextField()
-    appointmentType= models.CharField() # choices already defined above, new ones can be added as time goes on
+    appointmentType= models.CharField(
+        max_length = 2,
+        choices=app_choices
+    ) # choices already defined above, new ones can be added as time goes on
+    # dont think I need to include DoctorProvider and NurseProvider since the appointmentID will be added to those
+    # record
+
+    def __str__(self):
+        """Returns a string representation of Appointment record"""
+        return f"{self.dateTime} - type: {self.appointmentType}, patient: {self.patient.lastName}"
+
+#endclass
+
+class DoctorProvider(models.Model):
+    """ Helper model which allows certain appointments to have multiple providers (Doctor)
+    If multiple doctors will be present at an appointment, then multiple records of the DoctorProvider table will share the
+    same appointmentID
+    Attributes:
+    appointmentID: links to Appointment table
+    doctorID: PK of doctor if they are working on a certain appointment (can be blank if this is a Nurse only appointment)
+    """
+    appointmentID = models.ForeignKey("Appointment", on_delete=models.CASCADE)
+    doctorID = models.ForeignKey("Doctor", on_delete=models.CASCADE)
+
+    def __str__(self):
+        """ Returning string representation of DoctorProvider record"""
+        doctor = Doctor.objects.filter(pk=self.doctorID.pk)[0]
+        app = Appointment.objects.filter(pk=self.appointmentID.pk)[0]
+        return f"Date: {app.dateTime} Doctor: {doctor.firstName} {doctor.lastName}"
+#endclass
+
+class NurseProvider(models.Model):
+    """ Helper model which allows certain appointments to have multiple providers (Nurse)
+    If multiple nurses will be present at an appointment, then multiple records of theNurseProvider table will share the same
+    appointmentID
+    Attributes:
+    appointmentID: links to Appointment table
+    nurseID"""
+    appointmentID = models.ForeignKey("Appointment", on_delete=models.CASCADE)
+    nurseID = models.ForeignKey("Nurse", on_delete=models.CASCADE)
+#endclass
