@@ -1,12 +1,13 @@
 <!-- project/appointment.html
  Sulaf Al Jabal (U78815065) 11/24/25
  file description: html template dedicated to showing details about a certain Appointment record-
- Contains their information and their past appointments (need to figure that part out)-->
+-->
 
 {% extends 'project/base.html' %}
 
 {% block content %}
 
+<h2>Appointment: {{appointment.dateTime}}</h2>
 <h2>Patient: {{appointment.patient.firstName}} {{appointment.patient.middleName}} {{appointment.patient.lastName}}</h2>
 {% if appointment.patient.picture %}    
     <img src="{{appointment.patient.picture.url}}">
@@ -14,19 +15,34 @@
     <img src="../../../media/Default_pfp.jpg" alt="No picture associated with this patient" width="200">
 {% endif %}
 <br>
+<strong>Appointment type: </strong>{{appointment.appointmentType}}<br>
+<strong>Problem:</strong>{{appointment.problem}}<br>
+<strong>Problem description:</strong> {{appointment.problemDescription}}<br>
 
-Doctor(s) responsible:
+
+<strong>Doctor(s) responsible:</strong><br>
 {% if appointment.appointmentType == 'NA' %}
     No doctors, this is a nurse only appointment
 {% else %}
-    {% for d in appointment.doctors %}
-        <li>{{d.firstName}} {{d.lastName}}</li> <br>
-    {% endfor %}
+    <ul>
+        {% for d in appointment.get_doctors %}
+            <a href="{% url 'doctor' d.pk %}">
+                <li>{{d.firstName}} {{d.lastName}}</li> <br>
+            </a>
+        {% endfor %}
+    </ul>
 {% endif %}
 <br>
-Nurse(s) responsible:
-{% for n in appointment.nurses %}
-    <li>{{n.firstName}} {{n.lastName}}</li><br>
+
+<strong>Nurse(s) responsible:</strong><br>
+
+<ul>
+{% for n in appointment.get_nurses %}
+    <a href = "{% url 'nurse' n.pk %}"> <!--link to individual patient detail view-->
+        <li>{{n.firstName}} {{n.lastName}}</li>
+        
+    </a>
 {% endfor %}
+</ul>
 
 {% endblock %}

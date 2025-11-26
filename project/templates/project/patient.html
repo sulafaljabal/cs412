@@ -21,4 +21,22 @@ Is adult? {{patient.isAdult}}
 
 Primary Care Doctor?: {{patient.getPrimaryCareDoctor}}</p> <!-- either no or name of doctor, need a method for this-->
 
+<h3>{{patient.firstName}}'s previous appointments</h3> 
+<div class="container">
+    <div class="row">
+        <table>
+            <tr>
+                <th>Appointment date</th>
+                <th>Appointment time</th>
+            </tr>
+        </table>
+    </div>
+{% for a in appointments %}
+    <div>
+        <h4>{{a.dateTime}}</h4>
+        <p></p>
+    </div>
+{% endfor %}
+</div>
+
 {% endblock %}

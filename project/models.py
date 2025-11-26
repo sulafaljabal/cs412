@@ -41,7 +41,7 @@ class Patient(models.Model):
     def __str__(self):
         """ Returning string representation of Patient object """
         pcd = 'No' if self.primaryCareDoctor == None else f"{self.primaryCareDoctor.lastName}, {self.primaryCareDoctor.firstName}"
-        return f"{self.lastName}; {self.firstName}, {self.middleName} |\nDOB: {self.DOB} | {self.isAdult} | PC Doc: {pcd}"
+        return f"P: {self.lastName}; {self.firstName}, {self.middleName} | Age: {self.age} | {self.isAdult} | PCD: {pcd}" #PCD: Primary Care Doctor
     #enddef
 
     def getPrimaryCareDoctor(self):
@@ -63,7 +63,7 @@ class Doctor(models.Model):
     def __str__(self):
         """ Returning string representation of Doctor object. 
         This will need to change, not sure what attributes are important here. Maybe start with specialty?"""
-        return f"D: {self.lastName}, {self.firstName}"
+        return f"D: {self.lastName}, {self.firstName} | {self.specialty}"
     #enddef
 
 #endclass
@@ -125,7 +125,32 @@ class Appointment(models.Model):
 
     def __str__(self):
         """Returns a string representation of Appointment record"""
-        return f"{self.dateTime} - type: {self.appointmentType}, patient: {self.patient.lastName}"
+        return f"P: {self.patient.lastName}, {self.patient.firstName} | {self.patient.age} | {self.dateTime.date()} {self.dateTime.time()} | {self.appointmentType} | {self.problem}"
+    #enddef
+
+    def get_nurses(self):
+        """ Creating a method to get all nurses associated with this appointment. This helper function is used at least
+        twice in the application, once to show the specific details of any individual Appointment record, and another time
+        within the Patient Detail View"""
+
+        nurse_list = []
+        nurse_provider = list(NurseProvider.objects.filter(appointmentID=self.pk))
+        for n in nurse_provider:
+            nurse_list.append(Nurse.objects.filter(pk=n.nurseID.pk)[0]) # this might be a queryset
+        #endfor
+
+        return nurse_list
+    #enddef
+
+    def get_doctors(self, **kwargs):
+        """ Creating a method to get all doctors associated with this appointment record."""
+        doctor_list = []
+        doctor_provider = list(DoctorProvider.objects.filter(appointmentID=self.pk))
+        for d in doctor_provider:
+            doctor_list.append(Doctor.objects.filter(pk=d.doctorID.pk)[0])
+        #endfor
+        return doctor_list
+    #enddef
 
 #endclass
 
@@ -144,7 +169,9 @@ class DoctorProvider(models.Model):
         """ Returning string representation of DoctorProvider record"""
         doctor = Doctor.objects.filter(pk=self.doctorID.pk)[0]
         app = Appointment.objects.filter(pk=self.appointmentID.pk)[0]
-        return f"Date: {app.dateTime} Doctor: {doctor.firstName} {doctor.lastName}"
+        return f"D: {doctor.firstName} {doctor.lastName} | {doctor.specialty} | {app.dateTime.date()} {app.dateTime.time()} "
+    #enddef
+
 #endclass
 
 class NurseProvider(models.Model):
@@ -156,4 +183,10 @@ class NurseProvider(models.Model):
     nurseID"""
     appointmentID = models.ForeignKey("Appointment", on_delete=models.CASCADE)
     nurseID = models.ForeignKey("Nurse", on_delete=models.CASCADE)
+
+    def __str__(self):
+        """Returning string representation of NurseProvider object"""
+        nurse = Nurse.objects.filter(pk=self.nurseID.pk)[0]
+        app = Appointment.objects.filter(pk=self.appointmentID.pk)[0]
+        return f"N: {nurse.firstName} {nurse.lastName} | {app.dateTime.date()} {app.dateTime.time()} "
 #endclass

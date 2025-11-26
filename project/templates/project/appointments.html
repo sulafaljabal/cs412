@@ -48,12 +48,14 @@ File description: html template to showcase all records of appointments-->
     
             {% for a in appointments %}
             <tr>
-                
+                <td>
+                    <a href = "{% url 'patient' a.patient.pk %}"> <!--link to individual patient detail view-->
+                    {{a.patient.lastName}}</a>
+                </td>                 
                 <td>
                     <a href = "{% url 'appointment' a.pk %}"> <!--link to individual patient detail view-->
-                    {{a.patient.lastName}}</a>
+                    {{a.dateTime}}</a>
                 </td> 
-                <td>{{a.dateTime}}</td>
                 <td>{{a.appointmentType}}</td>
 
             

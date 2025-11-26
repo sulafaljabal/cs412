@@ -42,6 +42,16 @@ class PatientDetailView(DetailView):
     context_object_name = 'patient'
     template_name = 'project/patient.html'
     model = Patient
+
+    def get_context_data(self, **kwargs):
+        """Overriding get context data method to add previous appointments """
+        context = super().get_context_data()
+        patient = Patient.objects.filter(pk=self.object.pk)[0]
+        print(f"THIS IS THE PATIENT: {patient}")
+        apps = list(Appointment.objects.filter(patient=patient))
+        context['appointments'] = apps 
+        return context 
+    #enddef
 #endclass
 
 class DoctorDetailView(DetailView):
@@ -63,29 +73,4 @@ class AppointmentDetailView(DetailView):
     Shows patient, nurse(s), doctor, date of appointment """
     template_name = 'project/appointment.html'
     model = Appointment 
-
-    def get_context_data(self, **kwargs):
-        """ overriding context data method to add respective nurses and doctors"""
-        context = super().get_context_data()
-        # returns QuerySet of nurses and doctors
-        app = self.object
-        
-        nurse_list = []
-        doctor_list = []
-
-        nurse_provider = list(NurseProvider.objects.filter(appointmentID=app.pk))
-        for n in nurse_provider:
-            nurse_list.append(Nurse.objects.filter(pk=n.pk)[0]) # this might be a queryset
-        #endfor
-        
-        doctor_provider = list(DoctorProvider.objects.filter(appointmentID=app.pk))
-        for d in doctor_provider:
-            doctor_list.append(Doctor.objects.filter(pk=d.pk)[0])
-        #endfor
-
-        context['nurses'] = nurse_list
-        context['doctors'] = doctor_list
-        print(doctor_list)
-        print(nurse_list)
-
-        return context
+#endclass
