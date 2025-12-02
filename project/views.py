@@ -4,7 +4,9 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, TemplateView
 from .models import * 
-from django.urls import reverse # will need to use this later
+from django.urls import reverse, reverse_lazy # will need to use this later
+from .utils import Calendar
+
 # from .forms import * # administrative staff and patients should be able to schedule appointments
 
 # Create your views here.
@@ -74,3 +76,22 @@ class AppointmentDetailView(DetailView):
     template_name = 'project/appointment.html'
     model = Appointment 
 #endclass
+
+class CalendarView(ListView):
+    """ View responsible for showing calendar with appointments """
+    model = Appointment
+    template_name = 'project/appointment_calendar.html'
+    success_url = reverse_lazy("appointment_calendar")
+    # success_url = reverse("appointment_calendar")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # d = get_date(self.request.GET.get('month', None))
+        d = datetime.date.today()
+
+        cal = Calendar(d.year, d.month)
+        html_cal = cal.formatmonth(withyear=True)
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = prev_month(d)
+        context['next_month'] = next_month(d)
+        return context

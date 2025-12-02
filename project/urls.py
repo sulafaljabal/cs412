@@ -14,6 +14,7 @@ from.views import * #ShowAllView, ProfileView CreatePostView, etc...
 #app_name = "mini_insta"
 
 urlpatterns = [
+    path('', AppointmentListView.as_view(), name='home'),
     path('doctors', DoctorListView.as_view(), name='doctors'),
     path('nurses', NurseListView.as_view(), name='nurses'),
     path('patients', PatientListView.as_view(), name='patients'),
@@ -23,4 +24,7 @@ urlpatterns = [
     path('nurse/<int:pk>', NurseDetailView.as_view(), name='nurse'),
     path('doctor/<int:pk>', DoctorDetailView.as_view(), name='doctor'),
     path('appointment/<int:pk>', AppointmentDetailView.as_view(), name='appointment'),
+
+    path(r"appointment_calendar/", views.CalendarView.as_view(), name="appointment_calendar"),
+
 ]
