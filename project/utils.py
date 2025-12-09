@@ -25,10 +25,14 @@ class Calendar(HTMLCalendar):
         
         d = ''
         for appointment in appointments_per_day:
-            d += f'<li> {appointment.get_appointmentType_display()}</li>'
+            # Get the URL for the appointment detail page
+            appointment_url = reverse('appointment', kwargs={'pk': appointment.pk})
+            # Display time, patient name, and type as a clickable link
+            time_str = appointment.dateTime.strftime('%I:%M %p')
+            d += f'<li><a href="{appointment_url}">{time_str} - {appointment.patient.firstName} {appointment.patient.lastName} ({appointment.get_appointmentType_display()})</a></li>'
         
         if day != 0:
-            # Use reverse() to get the proper URL with all prefixes
+            # Use reverse() to get the proper URL for day schedule
             day_url = reverse('day_schedule') + f'?date={self.year}-{self.month}-{day}'
             day_link = f'<a href="{day_url}" class="day-number">{day}</a>'
             return f"<td><span class='date'>{day_link}</span><ul> {d} </ul></td>"
