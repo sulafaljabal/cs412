@@ -3,6 +3,7 @@
 # File description: Forms for administrative staff to create and manage appointments, patients, doctors, and nurses
 
 from django import forms
+from django.utils import timezone
 from .models import Appointment, Patient, Doctor, Nurse, DoctorProvider, NurseProvider
 import datetime
 
@@ -76,11 +77,27 @@ class CreateAppointmentForm(forms.ModelForm):
     #enddef
     
     def clean_dateTime(self):
-        """Validate that appointment is not in the past"""
+        """Validate that appointment is not in the past - handles both naive and aware datetimes"""
         datetime_value = self.cleaned_data['dateTime']
         
-        # Get current time
-        now = datetime.datetime.now()
+        # Make both datetimes have the same timezone awareness - getting timezone issues on cs webapps
+        try:
+            # Get current time - will be aware if USE_TZ=True, naive if USE_TZ=False
+            now = timezone.now()
+            
+            # If now is aware and datetime_value is naive, make datetime_value aware
+            if timezone.is_aware(now) and timezone.is_naive(datetime_value):
+                datetime_value = timezone.make_aware(datetime_value)
+            # If now is naive and datetime_value is aware, make datetime_value naive
+            elif timezone.is_naive(now) and timezone.is_aware(datetime_value):
+                datetime_value = timezone.make_naive(datetime_value)
+        except:
+            # If timezone module doesn't work, fall back to simple datetime
+            now = datetime.datetime.now()
+            # Strip any timezone info from datetime_value
+            if hasattr(datetime_value, 'tzinfo') and datetime_value.tzinfo is not None:
+                datetime_value = datetime_value.replace(tzinfo=None)
+        
         one_hour_ago = now - datetime.timedelta(hours=1)
         
         if datetime_value < one_hour_ago:
