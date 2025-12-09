@@ -9,7 +9,7 @@ import datetime
 class CreateAppointmentForm(forms.ModelForm):
     """Form for administrative staff to create appointments for patients"""
     
-    dateTime = forms.DateTimeField( # need to specify datetime-local or else issues arise
+    dateTime = forms.DateTimeField(
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         label='Appointment Date & Time'
     )
@@ -55,8 +55,6 @@ class CreateAppointmentForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         """Initialize form with optional pre-filled values"""
-
-        # checking for datetime and patient and assigning if possible
         initial_datetime = kwargs.pop('initial_datetime', None)
         initial_patient = kwargs.pop('initial_patient', None)
         
@@ -81,12 +79,7 @@ class CreateAppointmentForm(forms.ModelForm):
         """Validate that appointment is not in the past"""
         datetime_value = self.cleaned_data['dateTime']
         
-        # Simple comparison - just use naive datetimes
-        # If datetime_value has timezone info, remove it - application crashes when timezones are implemented
-        if datetime_value.tzinfo is not None:
-            datetime_value = datetime_value.replace(tzinfo=None)
-        
-        # Get current time as naive datetime
+        # Get current time
         now = datetime.datetime.now()
         one_hour_ago = now - datetime.timedelta(hours=1)
         
@@ -104,10 +97,10 @@ class CreateAppointmentForm(forms.ModelForm):
         appointment_type = cleaned_data.get('appointmentType')
         doctors = cleaned_data.get('doctors')
         
-        if appointment_type == 'NA': # nurse only appointment, no doctors needed
+        if appointment_type == 'NA':
             self.fields['doctors'].required = False
             cleaned_data['doctors'] = []
-        else: # not a nurse only appointment
+        else:
             if not doctors or not doctors.exists():
                 raise forms.ValidationError(
                     "At least one doctor is required for this appointment type."

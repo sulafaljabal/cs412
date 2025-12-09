@@ -7,7 +7,11 @@
 {% block content %}
 
 <h2>Appointment: {{appointment.dateTime}}</h2>
-<h2>Patient: {{appointment.patient.firstName}} {{appointment.patient.middleName}} {{appointment.patient.lastName}}</h2>
+<a href="{% url 'patient' appointment.patient.pk %}">
+    <li>
+        <h2>Patient: {{appointment.patient.firstName}} {{appointment.patient.middleName}} {{appointment.patient.lastName}}</h2>
+    </li>
+</a>
 {% if appointment.patient.picture %}    
     <img src="{{appointment.patient.picture.url}}">
 {% else %}

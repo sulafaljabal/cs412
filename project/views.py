@@ -26,6 +26,9 @@ class HomeView(TemplateView):
         context['total_nurses'] = Nurse.objects.count()
         context['total_appointments'] = Appointment.objects.count()
         
+        # Add current time for footer
+        context['current_time'] = datetime.datetime.now()
+        
         return context
     #enddef
 #endclass
@@ -35,6 +38,11 @@ class DoctorListView(ListView):
     context_object_name = 'doctors'
     template_name = 'project/doctors.html'
     model = Doctor
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class NurseListView(ListView):
@@ -42,6 +50,11 @@ class NurseListView(ListView):
     context_object_name = 'nurses'
     template_name = 'project/nurses.html'
     model = Nurse
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class PatientListView(ListView):
@@ -67,33 +80,28 @@ class PatientListView(ListView):
             queryset = queryset.filter(
                 Q(firstName__icontains=name_search) | Q(lastName__icontains=name_search)
             )
-        #endif
         
         # Filter by adult status if checkbox is checked
         if is_adult:
             today = datetime.date.today()
             eighteen_years_ago = datetime.date(today.year - 18, today.month, today.day)
             queryset = queryset.filter(DOB__lte=eighteen_years_ago)
-        #endif
         
         # Filter by child status if checkbox is checked
         if is_child:
             today = datetime.date.today()
             eighteen_years_ago = datetime.date(today.year - 18, today.month, today.day)
             queryset = queryset.filter(DOB__gt=eighteen_years_ago)
-        #endif
         
         # Filter by minimum birth year (born AFTER this year)
         if min_birth_year and min_birth_year != '':
             min_date = datetime.date(int(min_birth_year) + 1, 1, 1)
             queryset = queryset.filter(DOB__gte=min_date)
-        #endif
         
         # Filter by maximum birth year (born BEFORE this year)
         if max_birth_year and max_birth_year != '':
             max_date = datetime.date(int(max_birth_year) - 1, 12, 31)
             queryset = queryset.filter(DOB__lte=max_date)
-        #endif
         
         return queryset.order_by('lastName', 'firstName')
     #enddef
@@ -103,6 +111,7 @@ class PatientListView(ListView):
         context = super().get_context_data(**kwargs)
         current_year = datetime.date.today().year
         context['birth_years'] = range(1900, current_year + 1)
+        context['current_time'] = datetime.datetime.now()
         return context
     #enddef
 #endclass
@@ -129,17 +138,14 @@ class AppointmentListView(ListView):
         # Filter by appointment type
         if appointment_type and appointment_type != '':
             queryset = queryset.filter(appointmentType=appointment_type)
-        #endif
         
         # Filter by doctor
         if doctor_id and doctor_id != '':
             queryset = queryset.filter(doctorprovider__doctorID__pk=doctor_id)
-        #endif
         
         # Filter by nurse
         if nurse_id and nurse_id != '':
             queryset = queryset.filter(nurseprovider__nurseID__pk=nurse_id)
-        #endif
         
         # Filter by patient name
         if patient_name and patient_name.strip() != '':
@@ -147,22 +153,16 @@ class AppointmentListView(ListView):
                 Q(patient__firstName__icontains=patient_name) | 
                 Q(patient__lastName__icontains=patient_name)
             )
-        #endif
         
         # Filter by date range
         if date_from and date_from != '':
-            # Parse date string and create datetime for start of day
             date_from_obj = datetime.datetime.strptime(date_from, '%Y-%m-%d')
             queryset = queryset.filter(dateTime__gte=date_from_obj)
-        #endif
         
         if date_to and date_to != '':
-            # Parse date string and create datetime for end of day
             date_to_obj = datetime.datetime.strptime(date_to, '%Y-%m-%d')
-            # Add one day and filter before that (to include all of date_to)
             date_to_end = date_to_obj + datetime.timedelta(days=1)
             queryset = queryset.filter(dateTime__lt=date_to_end)
-        #endif
         
         # Order by date/time (most recent first)
         return queryset.order_by('-dateTime')
@@ -172,10 +172,16 @@ class AppointmentListView(ListView):
         """Add additional context for the filter form"""
         context = super().get_context_data(**kwargs)
         
-        # Add appointment types, doctors and nurses for dropdown
+        # Add appointment types for dropdown
         context['appointment_types'] = Appointment.app_choices
+        
+        # Add all doctors for dropdown
         context['doctors'] = Doctor.objects.all().order_by('lastName', 'firstName')
+        
+        # Add all nurses for dropdown
         context['nurses'] = Nurse.objects.all().order_by('lastName', 'firstName')
+        
+        context['current_time'] = datetime.datetime.now()
         
         return context
     #enddef
@@ -192,7 +198,8 @@ class PatientDetailView(DetailView):
         context = super().get_context_data()
         patient = Patient.objects.filter(pk=self.object.pk)[0]
         apps = list(Appointment.objects.filter(patient=patient))
-        context['appointments'] = apps 
+        context['appointments'] = apps
+        context['current_time'] = datetime.datetime.now()
         return context 
     #enddef
 #endclass
@@ -201,21 +208,36 @@ class DoctorDetailView(DetailView):
     """ View resposible for showing information about a particular Doctor"""
     context_object_name = 'doctor'
     template_name = 'project/doctor.html'
-    model = Doctor 
+    model = Doctor
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class NurseDetailView(DetailView):
     """ View resposible for showing information about a particular Nurse"""
     context_object_name = 'nurse'
     template_name = 'project/nurse.html'
-    model = Nurse 
+    model = Nurse
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class AppointmentDetailView(DetailView):
     """ View responsible for showing information about a particular appointment
     Shows patient, nurse(s), doctor, date of appointment """
     template_name = 'project/appointment.html'
-    model = Appointment 
+    model = Appointment
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class CreatePatientView(CreateView):
@@ -229,11 +251,10 @@ class CreatePatientView(CreateView):
         return reverse('patient', kwargs={'pk': self.object.pk})
     #enddef
     
-    def form_valid(self, form):
-        """Log patient creation"""
-        print(f"Creating new patient: {form.cleaned_data['firstName']} {form.cleaned_data['lastName']}")
-        return super().form_valid(form)
-    #enddef
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class UpdatePatientView(UpdateView):
@@ -247,11 +268,10 @@ class UpdatePatientView(UpdateView):
         return reverse('patient', kwargs={'pk': self.object.pk})
     #enddef
     
-    def form_valid(self, form):
-        """Log patient update"""
-        print(f"Updating patient {self.object.pk}: {form.cleaned_data['firstName']} {form.cleaned_data['lastName']}")
-        return super().form_valid(form)
-    #enddef
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class CreateDoctorView(CreateView):
@@ -265,11 +285,10 @@ class CreateDoctorView(CreateView):
         return reverse('doctor', kwargs={'pk': self.object.pk})
     #enddef
     
-    def form_valid(self, form):
-        """Log doctor creation"""
-        print(f"Creating new doctor: {form.cleaned_data['firstName']} {form.cleaned_data['lastName']}")
-        return super().form_valid(form)
-    #enddef
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class UpdateDoctorView(UpdateView):
@@ -283,11 +302,10 @@ class UpdateDoctorView(UpdateView):
         return reverse('doctor', kwargs={'pk': self.object.pk})
     #enddef
     
-    def form_valid(self, form):
-        """Log doctor update"""
-        print(f"Updating doctor {self.object.pk}: {form.cleaned_data['firstName']} {form.cleaned_data['lastName']}")
-        return super().form_valid(form)
-    #enddef
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class CreateNurseView(CreateView):
@@ -301,11 +319,10 @@ class CreateNurseView(CreateView):
         return reverse('nurse', kwargs={'pk': self.object.pk})
     #enddef
     
-    def form_valid(self, form):
-        """Log nurse creation"""
-        print(f"Creating new nurse: {form.cleaned_data['firstName']} {form.cleaned_data['lastName']}")
-        return super().form_valid(form)
-    #enddef
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class UpdateNurseView(UpdateView):
@@ -319,11 +336,10 @@ class UpdateNurseView(UpdateView):
         return reverse('nurse', kwargs={'pk': self.object.pk})
     #enddef
     
-    def form_valid(self, form):
-        """Log nurse update"""
-        print(f"Updating nurse {self.object.pk}: {form.cleaned_data['firstName']} {form.cleaned_data['lastName']}")
-        return super().form_valid(form)
-    #enddef
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class CreateAppointmentView(CreateView):
@@ -337,9 +353,6 @@ class CreateAppointmentView(CreateView):
     def get_form_kwargs(self):
         """
         Pass initial values to the form based on URL parameters.
-        This allows pre-filling the form when clicked from:
-        - Day schedule (date + hour)
-        - Patient detail page (patient)
         """
         kwargs = super().get_form_kwargs()
         
@@ -354,7 +367,6 @@ class CreateAppointmentView(CreateView):
                 initial_datetime = datetime.datetime(year, month, day, hour, 0)
                 kwargs['initial_datetime'] = initial_datetime
             except (ValueError, TypeError) as e:
-                print(f"Error parsing date/hour: {e}")
                 pass
         
         # Check if patient is provided (from patient detail page)
@@ -364,7 +376,6 @@ class CreateAppointmentView(CreateView):
                 patient = Patient.objects.get(pk=int(patient_id))
                 kwargs['initial_patient'] = patient
             except (ValueError, Patient.DoesNotExist) as e:
-                print(f"Error getting patient: {e}")
                 pass
         
         return kwargs
@@ -387,7 +398,6 @@ class CreateAppointmentView(CreateView):
                 appointmentID=self.object,
                 doctorID=doctor
             )
-        #endfor
         
         # Create NurseProvider records for each selected nurse
         for nurse in nurses:
@@ -395,7 +405,6 @@ class CreateAppointmentView(CreateView):
                 appointmentID=self.object,
                 nurseID=nurse
             )
-        #endfor
         
         return super().form_valid(form)
     #enddef
@@ -404,13 +413,16 @@ class CreateAppointmentView(CreateView):
         """Redirect to the appointment detail page after successful creation"""
         return reverse('appointment', kwargs={'pk': self.object.pk})
     #enddef
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 class DeleteAppointmentView(DeleteView):
     """
     View for administrative staff to delete appointments.
-    This is only accessible from the appointment detail page.
-    Requires confirmation before deletion.
     """
     model = Appointment
     template_name = 'project/delete_appointment.html'
@@ -421,12 +433,10 @@ class DeleteAppointmentView(DeleteView):
         return reverse_lazy('appointments')
     #enddef
     
-    def delete(self, request, *args, **kwargs):
-        """Override delete to add logging"""
-        self.object = self.get_object()
-        print(f"Deleting appointment {self.object.pk} for patient {self.object.patient}")
-        return super().delete(request, *args, **kwargs)
-    #enddef
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_time'] = datetime.datetime.now()
+        return context
 #endclass
 
 def prev_month(d):
@@ -435,20 +445,17 @@ def prev_month(d):
     prev_month_date = first - datetime.timedelta(days=1)
     month = 'month=' + str(prev_month_date.year) + '-' + str(prev_month_date.month)
     return month
-#enddef
 
 def next_month(d):
     """Helper function to get the next month"""
     days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     if d.year % 4 == 0 and (d.year % 100 != 0 or d.year % 400 == 0):
-        days_in_month[1] = 29 # leap year logic
-    #endif
+        days_in_month[1] = 29
     days = days_in_month[d.month - 1]
     last = d.replace(day=days)
     next_month_date = last + datetime.timedelta(days=1)
     month = 'month=' + str(next_month_date.year) + '-' + str(next_month_date.month)
     return month
-#enddef
 
 def get_date(req_day):
     """Helper function to get date from request"""
@@ -456,7 +463,6 @@ def get_date(req_day):
         year, month = (int(x) for x in req_day.split('-'))
         return datetime.date(year, month, day=1)
     return datetime.date.today()
-#enddef
 
 def get_full_date(req_date):
     """Helper function to get a specific date (including day) from request"""
@@ -464,19 +470,16 @@ def get_full_date(req_date):
         year, month, day = (int(x) for x in req_date.split('-'))
         return datetime.date(year, month, day)
     return datetime.date.today()
-#enddef
 
 def prev_day(d):
     """Helper function to get the previous day"""
     prev = d - datetime.timedelta(days=1)
     return f'date={prev.year}-{prev.month}-{prev.day}'
-#enddef
 
 def next_day(d):
     """Helper function to get the next day"""
     next_d = d + datetime.timedelta(days=1)
     return f'date={next_d.year}-{next_d.month}-{next_d.day}'
-#enddef
 
 class CalendarView(ListView):
     """ View responsible for showing calendar with appointments """
@@ -500,12 +503,12 @@ class CalendarView(ListView):
         context['next_month'] = next_month(d)
         context['current_month'] = d
         context['appointments_this_month'] = appointments_this_month
+        context['current_time'] = datetime.datetime.now()
         return context
-    #enddef
 #endclass
 
 class DayScheduleView(ListView):
-    """View responsible for showing day-by-day schedule like Google Calendar"""
+    """View responsible for showing day-by-day schedule"""
     model = Appointment
     template_name = 'project/day_schedule.html'
     
@@ -520,7 +523,7 @@ class DayScheduleView(ListView):
             dateTime__day=d.day
         ).order_by('dateTime')
         
-        # Create a time slot structure (8 AM to 8 PM)
+        # Create a time slot structure (8 AM to 8 PM by default)
         hours = range(8, 21)
         time_slots = []
         
@@ -544,7 +547,7 @@ class DayScheduleView(ListView):
         context['time_slots'] = time_slots
         context['prev_day'] = prev_day(d)
         context['next_day'] = next_day(d)
+        context['current_time'] = datetime.datetime.now()
         
         return context
-    #enddef
 #endclass
