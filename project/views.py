@@ -524,7 +524,7 @@ class DayScheduleView(ListView):
         ).order_by('dateTime')
         
         # Create a time slot structure (8 AM to 8 PM by default)
-        hours = range(8, 21)
+        hours = range(0, 24)
         time_slots = []
         
         for hour in hours:
