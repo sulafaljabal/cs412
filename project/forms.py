@@ -38,7 +38,7 @@ class CreateAppointmentForm(forms.ModelForm):
     doctors = forms.ModelMultipleChoiceField(
         queryset=Doctor.objects.all().order_by('lastName', 'firstName'),
         widget=forms.CheckboxSelectMultiple,
-        required=True,
+        required=False,  # Changed to False - we'll validate in clean()
         label='Assign Doctor(s)'
     )
     
@@ -72,7 +72,6 @@ class CreateAppointmentForm(forms.ModelForm):
         self.fields['problem'].required = True
         self.fields['problemDescription'].required = True
         self.fields['appointmentType'].required = True
-        self.fields['doctors'].required = True
         self.fields['nurses'].required = True
     #enddef
     
@@ -80,7 +79,8 @@ class CreateAppointmentForm(forms.ModelForm):
         """Validate that appointment is not in the past - handles both naive and aware datetimes"""
         datetime_value = self.cleaned_data['dateTime']
         
-        # Make both datetimes have the same timezone awareness - getting timezone issues on cs webapps
+        # Make both datetimes have the same timezone awareness
+        # Check if Django is using timezone support
         try:
             # Get current time - will be aware if USE_TZ=True, naive if USE_TZ=False
             now = timezone.now()
@@ -114,13 +114,12 @@ class CreateAppointmentForm(forms.ModelForm):
         appointment_type = cleaned_data.get('appointmentType')
         doctors = cleaned_data.get('doctors')
         
-        if appointment_type == 'NA':
-            self.fields['doctors'].required = False
-            cleaned_data['doctors'] = []
-        else:
+        # Only require doctors if it's NOT a nurse-only appointment
+        if appointment_type != 'NA':
+            # For non-nurse appointments, at least one doctor is required
             if not doctors or not doctors.exists():
                 raise forms.ValidationError(
-                    "At least one doctor is required for this appointment type."
+                    "At least one doctor is required for this appointment type. For nurse-only appointments, select 'Nurse Appointment' as the type."
                 )
         
         return cleaned_data
