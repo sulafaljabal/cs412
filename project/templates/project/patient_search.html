@@ -7,9 +7,18 @@
 <form action="{% url 'patients' %}">
 
 <tr>
+    <th>Search by name:</th>
+    <td><input type="text" name="name" placeholder="First or Last Name"></td>
+</tr>
+
+<tr>
     <th>Is adult?:</th>
     <td><input type="checkbox" name="isAdult"></td>
+</tr>
 
+<tr>
+    <th>Is child? (under 18):</th>
+    <td><input type="checkbox" name="isChild"></td>
 </tr>
 
 <tr>
@@ -43,4 +52,3 @@
 </form>
 
 </table>
- 

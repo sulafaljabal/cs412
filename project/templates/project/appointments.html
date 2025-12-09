@@ -1,6 +1,6 @@
 <!--templates/project/appointments.html
 Sulaf Al Jabal (U78815065) 11/24/25
-File description: html template to showcase all records of appointments-->
+File description: html template to showcase all records of appointments, organized by time-->
 
 {% extends 'project/base.html' %}
  
@@ -10,7 +10,7 @@ File description: html template to showcase all records of appointments-->
 <div class="container">
         
         <div class="row">
-            {% include "project/appointment_search.html" %} <!-- splitting query search page and showing records-->
+            {% include "project/appointment_search.html" %}
         </div>
         <a class="buttons" href="{% url 'appointments' %}">Clear Filters</a>
  
@@ -18,7 +18,7 @@ File description: html template to showcase all records of appointments-->
         {% if is_paginated %}
         <ul class="pagination">
             {% if page_obj.has_previous %}
-                <li> <!--keeps search querires/url containing search queries across pages -->
+                <li>
                     <span><a href="?{{ request.GET.urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a></span>                
                 </li>
             {% endif %}
@@ -39,27 +39,42 @@ File description: html template to showcase all records of appointments-->
         <table>
             
             <tr>
-                <th>Patient Last Name</th>
-                <th>Appointment Date</th>
+                <th>Date & Time</th>
+                <th>Patient</th>
                 <th>Appointment Type</th>
-
-
+                <th>Problem</th>
+                <th>Doctor(s)</th>
+                <th>Nurse(s)</th>
             </tr>
     
             {% for a in appointments %}
             <tr>
                 <td>
-                    <a href = "{% url 'patient' a.patient.pk %}"> <!--link to individual patient detail view-->
-                    {{a.patient.lastName}}</a>
-                </td>                 
+                    <a href="{% url 'appointment' a.pk %}">
+                        {{a.dateTime|date:"m/d/Y g:i A"}}
+                    </a>
+                </td>
                 <td>
-                    <a href = "{% url 'appointment' a.pk %}"> <!--link to individual patient detail view-->
-                    {{a.dateTime}}</a>
-                </td> 
-                <td>{{a.appointmentType}}</td>
-
-            
-
+                    <a href="{% url 'patient' a.patient.pk %}">
+                        {{a.patient.lastName}}, {{a.patient.firstName}}
+                    </a>
+                </td>                 
+                <td>{{a.get_appointmentType_display}}</td>
+                <td>{{a.problem}}</td>
+                <td>
+                    {% for doctor in a.get_doctors %}
+                        <a href="{% url 'doctor' doctor.pk %}">{{doctor.lastName}}</a>{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        None
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for nurse in a.get_nurses %}
+                        <a href="{% url 'nurse' nurse.pk %}">{{nurse.lastName}}</a>{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        None
+                    {% endfor %}
+                </td>
             </tr>
             {% endfor %}
         </table>
@@ -67,5 +82,3 @@ File description: html template to showcase all records of appointments-->
  
 </div>    
 {% endblock %}
- 
-

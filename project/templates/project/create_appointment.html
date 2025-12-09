@@ -1,0 +1,29 @@
+<!-- file: templates/project/create_appointment.html
+ Sulaf Al Jabal (U78815065) 12/06/2025
+ Decsription: html template which displays form responsible for creating an appointment-->
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h2>Create New Appointment</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <table>
+        {{ form.as_table }}
+    </table>
+    
+    <br>
+    <input type="submit" value="Create Appointment">
+    <a href="{% url 'day_schedule' %}">Cancel</a>
+</form>
+
+{% if form.errors %}
+    <div>
+        <h3>Errors:</h3>
+        {{ form.errors }}
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,112 @@
+/* Minimal styling with white and mint green color scheme */
+
+body {
+    margin: 30px;
+    background: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+ul, li {
+    padding: 0px;
+    list-style-type: none;
+}
+
+h1, h2, h3 {
+    color: #2d5f5d;
+}
+
+p {
+    color: #333333;
+}
+
+a {
+    color: #3d7f7d;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+header {
+    max-width: 1200px;
+    margin: 40px auto;
+    border-bottom: 1px solid #b8e0d8;
+}
+
+nav {
+    background: #e8f5f3;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+nav li {
+    display: inline;
+    margin-right: 15px;
+}
+
+button {
+    background: #b8e0d8;
+    border: 1px solid #95d5cc;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #95d5cc;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+}
+
+table th {
+    background: #e8f5f3;
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #b8e0d8;
+    color: #2d5f5d;
+}
+
+table td {
+    padding: 10px;
+    border: 1px solid #d9ebe8;
+}
+
+table tr:hover {
+    background: #f5faf9;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="datetime-local"],
+select,
+textarea {
+    padding: 8px;
+    border: 1px solid #b8e0d8;
+    margin: 5px 0;
+}
+
+input[type="submit"] {
+    background: #b8e0d8;
+    border: 1px solid #95d5cc;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background: #95d5cc;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #b8e0d8;
+    margin: 20px 0;
+}

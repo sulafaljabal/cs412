@@ -1,0 +1,74 @@
+<!-- templates/project/day_schedule.html
+ Sulaf Al Jabal (U78815065) 12/7/2025
+ Description: html template to showcase schedule for any day, users can add appointments or view appointment details-->
+{% extends 'project/base.html' %}
+{% block content %}
+
+<h2>Day Schedule - {{ current_date|date:"l, F d, Y" }}</h2>
+
+<div>
+    <a href="{% url 'day_schedule' %}?{{ prev_day }}"> &lt;&lt; Previous Day </a>
+    <a href="{% url 'day_schedule' %}"> Today </a>
+    <a href="{% url 'day_schedule' %}?{{ next_day }}"> Next Day &gt;&gt; </a>
+    <a href="{% url 'appointment_calendar' %}?month={{ current_date.year }}-{{ current_date.month }}"> Back to Month View </a>
+</div>
+
+<h3>Appointments for {{ current_date|date:"F d, Y" }}: {{ appointments_today.count }}</h3>
+
+<table>
+    <tr>
+        <th>Time</th>
+        <th>Appointments</th>
+        <th>Actions</th>
+    </tr>
+    
+    {% for slot in time_slots %}
+    <tr>
+        <td>{{ slot.display_time }}</td>
+        <td>
+            {% if slot.appointments %}
+                {% for appointment in slot.appointments %}
+                    <div>
+                        <a href="{% url 'appointment' appointment.pk %}">{{ appointment.dateTime|date:"g:i A" }}</a><br>
+                        Patient: <a href="{% url 'patient' appointment.patient.pk %}">{{ appointment.patient.firstName }} {{ appointment.patient.lastName }}</a><br>
+                        Problem: {{ appointment.problem }}<br>
+                        Type: {{ appointment.get_appointmentType_display }}<br>
+                        {% if appointment.get_doctors %}
+                            Doctor(s): 
+                            {% for doctor in appointment.get_doctors %}
+                                <a href="{% url 'doctor' doctor.pk %}">{{ doctor.firstName }} {{ doctor.lastName }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                            <br>
+                        {% endif %}
+                    </div>
+                    {% if not forloop.last %}<hr>{% endif %}
+                {% endfor %}
+            {% else %}
+                No appointments
+            {% endif %}
+        </td>
+        <td>
+            <a href="{% url 'create_appointment' %}?date={{ slot.date.year }}-{{ slot.date.month }}-{{ slot.date.day }}&hour={{ slot.hour }}">
+                Add Appointment
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>All Appointments Today:</h3>
+<ul>
+{% for appointment in appointments_today %}
+    <li>
+        <a href="{% url 'appointment' appointment.pk %}">
+            {{ appointment.dateTime|date:"g:i A" }} - 
+            {{ appointment.patient.firstName }} {{ appointment.patient.lastName }} - 
+            {{ appointment.problem }}
+        </a>
+    </li>
+{% empty %}
+    <li>No appointments scheduled for this day</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

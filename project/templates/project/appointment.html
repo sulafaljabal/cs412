@@ -1,7 +1,6 @@
 <!-- project/appointment.html
  Sulaf Al Jabal (U78815065) 11/24/25
- file description: html template dedicated to showing details about a certain Appointment record-
--->
+ file description: html template dedicated to showing details about a certain Appointment record-->
 
 {% extends 'project/base.html' %}
 
@@ -15,8 +14,8 @@
     <img src="../../../media/Default_pfp.jpg" alt="No picture associated with this patient" width="200">
 {% endif %}
 <br>
-<strong>Appointment type: </strong>{{appointment.appointmentType}}<br>
-<strong>Problem:</strong>{{appointment.problem}}<br>
+<strong>Appointment type: </strong>{{appointment.get_appointmentType_display}}<br>
+<strong>Problem:</strong> {{appointment.problem}}<br>
 <strong>Problem description:</strong> {{appointment.problemDescription}}<br>
 
 
@@ -38,11 +37,17 @@
 
 <ul>
 {% for n in appointment.get_nurses %}
-    <a href = "{% url 'nurse' n.pk %}"> <!--link to individual patient detail view-->
+    <a href="{% url 'nurse' n.pk %}">
         <li>{{n.firstName}} {{n.lastName}}</li>
-        
     </a>
 {% endfor %}
 </ul>
+
+<hr>
+
+<h3>Administrative Actions</h3>
+<a href="{% url 'delete_appointment' appointment.pk %}">
+    <button type="button">Delete This Appointment</button>
+</a>
 
 {% endblock %}

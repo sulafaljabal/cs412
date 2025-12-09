@@ -7,10 +7,18 @@ File description: html template to showcase all records of Nurses-->
 {% block content %}
 
 <h2>Showing all nurses</h2>
+
+<div>
+    <a href="{% url 'create_nurse' %}">
+        <button type="button">Create New Nurse</button>
+    </a>
+</div>
+
+<br>
+
 {% for n in nurses %}
-    <a href = "{% url 'nurse' n.pk %}"> <!--link to individual patient detail view-->
+    <a href = "{% url 'nurse' n.pk %}">
         <p>{{n.firstName}} {{n.lastName}}</p>
-        
     </a>
 {% endfor %}
 

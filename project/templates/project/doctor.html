@@ -1,18 +1,25 @@
 <!-- project/doctor.html
  Sulaf Al Jabal (U78815065) 11/24/25
- file description: html template dedicated to showing details about a certain doctor record-
- Contains their information and their past appointments (need to figure that part out)-->
+ file description: html template dedicated to showing details about a certain doctor record-->
 
 {% extends 'project/base.html' %}
 
 {% block content %}
 
-<h2>doctor: {{doctor.firstName}} {{doctor.lastName}}</h2>
+<h2>Doctor: {{doctor.firstName}} {{doctor.lastName}}</h2>
 {% if doctor.picture %} 
     <img src="{{doctor.picture.url}}" alt="Picture of {{doctor.firstName}} {{doctor.lastName}}" width="200">
 {% else %}
-    <img src="../../../media/Default_pfp.jpg" alt="No picture associated with this nurse" width="200">
+    <img src="../../../media/Default_pfp.jpg" alt="No picture associated with this doctor" width="200">
 {% endif %}
 
 <p>Specialty: {{doctor.specialty}}</p>
+
+<h3>Administrative Actions</h3>
+<div>
+    <a href="{% url 'update_doctor' doctor.pk %}">
+        <button type="button">Update Doctor Information</button>
+    </a>
+</div>
+
 {% endblock %}

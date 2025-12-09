@@ -1,0 +1,40 @@
+<!-- project/doctor_form.html
+ Sulaf Al Jabal (U78815065) 12/07/25
+ file description: html template for creating or updating doctor records-->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+{% if form.instance.pk %}
+    <h2>Update Doctor: {{form.instance.firstName}} {{form.instance.lastName}}</h2>
+{% else %}
+    <h2>Create New Doctor</h2>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <table>
+        {{ form.as_table }}
+    </table>
+    
+    <br>
+    
+    {% if form.instance.pk %}
+        <input type="submit" value="Update Doctor">
+        <a href="{% url 'doctor' form.instance.pk %}">Cancel</a>
+    {% else %}
+        <input type="submit" value="Create Doctor">
+        <a href="{% url 'doctors' %}">Cancel</a>
+    {% endif %}
+</form>
+
+{% if form.errors %}
+    <div>
+        <h3>Errors:</h3>
+        {{ form.errors }}
+    </div>
+{% endif %}
+
+{% endblock %}

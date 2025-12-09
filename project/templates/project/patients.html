@@ -10,15 +10,18 @@ File description: html template to showcase all records of patients-->
 <div class="container">
         
         <div class="row">
-            {% include "project/patient_search.html" %} <!-- splitting query search page and showing records-->
+            {% include "project/patient_search.html" %}
         </div>
         <a class="buttons" href="{% url 'patients' %}">Clear Filters</a>
+        <a class="buttons" href="{% url 'create_patient' %}">
+            <button type="button">Create New Patient</button>
+        </a>
  
     <div class="row">
         {% if is_paginated %}
         <ul class="pagination">
             {% if page_obj.has_previous %}
-                <li> <!--keeps search querires/url containing search queries across pages -->
+                <li>
                     <span><a href="?{{ request.GET.urlencode }}&page={{ page_obj.previous_page_number }}">Previous</a></span>                
                 </li>
             {% endif %}
@@ -54,7 +57,7 @@ File description: html template to showcase all records of patients-->
             <tr>
                 
                 <td>
-                    <a href = "{% url 'patient' p.pk %}"> <!--link to individual patient detail view-->
+                    <a href = "{% url 'patient' p.pk %}">
                     {{p.lastName}}</a>
                 </td> 
                 <td>{{p.firstName}}</td>
@@ -73,5 +76,3 @@ File description: html template to showcase all records of patients-->
  
 </div>    
 {% endblock %}
- 
-

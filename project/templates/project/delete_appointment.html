@@ -1,0 +1,27 @@
+<!-- project/delete_appointment.html
+ Sulaf Al Jabal (U78815065) 12/07/25
+ file description: confirmation page for deleting an appointment-->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h2>Delete Appointment Confirmation</h2>
+
+<p>Are you sure you want to delete this appointment?</p>
+
+<h3>Appointment Details:</h3>
+<p>
+<strong>Date & Time:</strong> {{appointment.dateTime|date:"F d, Y g:i A"}}<br>
+<strong>Patient:</strong> {{appointment.patient.firstName}} {{appointment.patient.lastName}}<br>
+<strong>Type:</strong> {{appointment.get_appointmentType_display}}<br>
+<strong>Problem:</strong> {{appointment.problem}}<br>
+</p>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Yes, Delete This Appointment">
+    <a href="{% url 'appointment' appointment.pk %}">Cancel</a>
+</form>
+
+{% endblock %}

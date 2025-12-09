@@ -1,0 +1,99 @@
+<!-- project/home.html
+ Sulaf Al Jabal (U78815065) 12/07/25
+ file description: Home page for hospital scheduling application - information for administrators-->
+
+{% extends 'project/base.html' %}
+
+{% block content %}
+
+<h1>Hospital Scheduling Application</h1>
+<h2>Administrative Dashboard</h2>
+
+<p>Welcome to the Hospital Scheduling Application. This system is designed for administrative staff to manage patient appointments, staff assignments, and medical records.</p>
+
+<hr>
+
+<h3>System Overview</h3>
+
+<h4>Patient Management</h4>
+<ul>
+    <li><strong>View All Patients:</strong> Browse and search through all patient records</li>
+    <li><strong>Filter Patients:</strong> Search by name, age group (adult/child), birth year range</li>
+    <li><strong>Create New Patient:</strong> Add new patients to the system with demographic and contact information</li>
+    <li><strong>Update Patient Records:</strong> Modify existing patient information including address, primary care doctor, and profile picture</li>
+    <li><strong>View Patient History:</strong> See all appointments for any individual patient</li>
+</ul>
+
+<h4>Doctor Management</h4>
+<ul>
+    <li><strong>View All Doctors:</strong> Browse all doctor records in the system</li>
+    <li><strong>Create New Doctor:</strong> Add new doctors with specialty information and profile pictures</li>
+    <li><strong>Update Doctor Records:</strong> Modify doctor information including specialty and profile picture</li>
+    <li><strong>Assign to Appointments:</strong> Assign single or multiple doctors to appointments</li>
+</ul>
+
+<h4>Nurse Management</h4>
+<ul>
+    <li><strong>View All Nurses:</strong> Browse all nurse records in the system</li>
+    <li><strong>Create New Nurse:</strong> Add new nurses with profile pictures</li>
+    <li><strong>Update Nurse Records:</strong> Modify nurse information and profile pictures</li>
+    <li><strong>Assign to Appointments:</strong> Assign single or multiple nurses to appointments</li>
+</ul>
+
+<h4>Appointment Management</h4>
+<ul>
+    <li><strong>View All Appointments:</strong> Browse all scheduled appointments</li>
+    <li><strong>Filter Appointments:</strong> Search by appointment type, assigned doctor, assigned nurse, patient name, or date range</li>
+    <li><strong>Create New Appointment:</strong> Schedule appointments from:
+        <ul>
+            <li>Day schedule view (click time slot)</li>
+            <li>Patient detail page (pre-fills patient)</li>
+            <li>Direct creation form</li>
+        </ul>
+    </li>
+    <li><strong>Delete Appointments:</strong> Remove appointments with confirmation (accessible from appointment detail page only)</li>
+    <li><strong>Appointment Types Supported:</strong> Checkups, Post-Operation, Specialist Consultation, Follow-up Visits, Nurse Appointments, Pre-operation Visits, Counseling Sessions, Telehealth Visits, Vaccinations, Annual Checkups, Birth Control Consultations, Medication Checks</li>
+</ul>
+
+<h4>Calendar Views</h4>
+<ul>
+    <li><strong>Month Calendar View:</strong> Visual calendar showing all appointments for a selected month
+        <ul>
+            <li>Navigate between months</li>
+            <li>Click any day number to see detailed day schedule</li>
+            <li>See appointment summaries on each day</li>
+        </ul>
+    </li>
+    <li><strong>Day Schedule View:</strong> Hour-by-hour breakdown of appointments for a specific day
+        <ul>
+            <li>Time slots from 8 AM to 8 PM</li>
+            <li>Add appointments directly from any time slot</li>
+            <li>See patient, doctor, and nurse information for each appointment</li>
+            <li>Navigate between days</li>
+        </ul>
+    </li>
+</ul>
+
+<hr>
+
+<h3>Quick Links</h3>
+<p>
+    <a href="{% url 'patients' %}"><button type="button">Manage Patients</button></a>
+    <a href="{% url 'doctors' %}"><button type="button">Manage Doctors</button></a>
+    <a href="{% url 'nurses' %}"><button type="button">Manage Nurses</button></a>
+    <a href="{% url 'appointments' %}"><button type="button">View Appointments</button></a>
+    <a href="{% url 'appointment_calendar' %}"><button type="button">Calendar View</button></a>
+    <a href="{% url 'day_schedule' %}"><button type="button">Today's Schedule</button></a>
+</p>
+
+<hr>
+
+<h3>System Statistics</h3>
+<ul>
+    <li><strong>Total Patients:</strong> {{ total_patients }}</li>
+    <li><strong>Total Doctors:</strong> {{ total_doctors }}</li>
+    <li><strong>Total Nurses:</strong> {{ total_nurses }}</li>
+    <li><strong>Total Appointments:</strong> {{ total_appointments }}</li>
+</ul>
+
+{% endblock %}

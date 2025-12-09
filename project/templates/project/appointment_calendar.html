@@ -1,5 +1,37 @@
-{% extends 'base.html' %}
+<!-- file: templates/project/appointment_calendar.html
+ Sulaf Al Jabal (U78815065) 12/02/2025
+ File description: html template responsible for showing calendar view of each month, appointments for each day of the month populate the screen-->
+{% extends 'project/base.html' %}
 {% block content %}
-<a href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a><a href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
-{{ calendar }}
+
+<h2>Appointment Calendar - {{ current_month|date:"F Y" }}</h2>
+
+<div>
+    <a href="{% url 'appointment_calendar' %}?{{ prev_month }}"> &lt;&lt; Previous Month </a>
+    <a href="{% url 'appointment_calendar' %}"> Today </a>
+    <a href="{% url 'appointment_calendar' %}?{{ next_month }}"> Next Month &gt;&gt; </a>
+    <a href="{% url 'day_schedule' %}"> Day Schedule View </a>
+</div>
+
+<p><em>Click on any day number to see detailed schedule for that day</em></p>
+
+<div>
+    {{ calendar }}
+</div>
+
+<!-- Debug info - Remove this after testing -->
+<div>
+    <h3>Debug Information:</h3>
+    <p><strong>Current Month Viewing:</strong> {{ current_month|date:"F Y" }}</p>
+    <p><strong>Total Appointments in Database:</strong> {{ object_list.count }}</p>
+    <p><strong>Appointments THIS month ({{ current_month|date:"F Y" }}):</strong> {{ appointments_this_month.count }}</p>
+    <ul>
+    {% for appointment in appointments_this_month %}
+        <li>{{ appointment.patient.lastName }}, {{ appointment.patient.firstName }} - {{ appointment.dateTime }}</li>
+    {% empty %}
+        <li>No appointments found for {{ current_month|date:"F Y" }}</li>
+    {% endfor %}
+    </ul>
+</div>
+
 {% endblock %}

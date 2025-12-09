@@ -7,10 +7,18 @@ File description: html template to showcase all records of Doctors-->
 {% block content %}
 
 <h2>Showing all doctors</h2>
+
+<div>
+    <a href="{% url 'create_doctor' %}">
+        <button type="button">Create New Doctor</button>
+    </a>
+</div>
+
+<br>
+
 {% for d in doctors %}
-    <a href = "{% url 'doctor' d.pk %}"> <!--link to individual doctor detail view-->
-        <p>{{d.firstName}} {{d.lastName}}</p>
-        
+    <a href = "{% url 'doctor' d.pk %}">
+        <p>{{d.firstName}} {{d.lastName}} - {{d.specialty}}</p>
     </a>
 {% endfor %}
 {% endblock %}
