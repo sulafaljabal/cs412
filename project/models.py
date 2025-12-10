@@ -33,10 +33,7 @@ class Patient(models.Model):
             return 'Adult'
         return 'Child'
     #enddef
-    # might need some more legal things such as: power of attorney priveldges/whether individual is in right state of mind
-    # to make medical decisions for themselves, this might lead to another model being created for people who have this
-    # power over certain patients such as children/dependents, elderly, patients in a comotose/vegetative state, etc.
-    # Maybe even emancipated children (rare...)
+
 
     def __str__(self):
         """ Returning string representation of Patient object """
@@ -102,7 +99,7 @@ class Appointment(models.Model):
         ('PO', "Post Operation"),
         ('SP', "Specialist Consultation"),
         ("FU", "Follow-up Visit"),
-        ("NA", "Nurse Appointment"), # as it states, wrt this application, head doctor field shall be null
+        ("NA", "Nurse Appointment"), 
         ("PE", "Pre-operation Visit"),
         ("CO", "Counselling Session"),
         ("TH", "Telehealth/Virtual Visit"),

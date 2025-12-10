@@ -1,2 +1,3 @@
-username: sulafaljabal
-password: 12345678!@#
+To access admin panel for final project
+username: sulaf
+password: 1234

@@ -38,7 +38,7 @@ class CreateAppointmentForm(forms.ModelForm):
     doctors = forms.ModelMultipleChoiceField(
         queryset=Doctor.objects.all().order_by('lastName', 'firstName'),
         widget=forms.CheckboxSelectMultiple,
-        required=False,  # Changed to False - we'll validate in clean()
+        required=False,  # not required immediately for nurse only appointments, validated later
         label='Assign Doctor(s)'
     )
     

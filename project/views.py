@@ -8,7 +8,7 @@ from .forms import CreateAppointmentForm, PatientForm, DoctorForm, NurseForm
 from django.urls import reverse, reverse_lazy
 from .utils import Calendar
 from django.utils.safestring import mark_safe
-from django.db.models import Q  # For OR queries
+from django.db.models import Q  
 import datetime
 
 # Create your views here.
@@ -26,7 +26,8 @@ class HomeView(TemplateView):
         context['total_nurses'] = Nurse.objects.count()
         context['total_appointments'] = Appointment.objects.count()
         
-        # Add current time for footer
+        # Add current time for footer - had too many issues trying to use timezones since cswebapps is based off a 
+        # non-us timezone
         context['current_time'] = datetime.datetime.now()
         
         return context
@@ -241,7 +242,7 @@ class AppointmentDetailView(DetailView):
 #endclass
 
 class CreatePatientView(CreateView):
-    """View for administrative staff to create new patient records"""
+    """View to create new patient records"""
     model = Patient
     form_class = PatientForm
     template_name = 'project/patient_form.html'
@@ -258,7 +259,7 @@ class CreatePatientView(CreateView):
 #endclass
 
 class UpdatePatientView(UpdateView):
-    """View for administrative staff to update existing patient records"""
+    """View to update existing patient records"""
     model = Patient
     form_class = PatientForm
     template_name = 'project/patient_form.html'
@@ -275,7 +276,7 @@ class UpdatePatientView(UpdateView):
 #endclass
 
 class CreateDoctorView(CreateView):
-    """View for administrative staff to create new doctor records"""
+    """View to create new doctor records"""
     model = Doctor
     form_class = DoctorForm
     template_name = 'project/doctor_form.html'
@@ -292,7 +293,7 @@ class CreateDoctorView(CreateView):
 #endclass
 
 class UpdateDoctorView(UpdateView):
-    """View for administrative staff to update existing doctor records"""
+    """View to update existing doctor records"""
     model = Doctor
     form_class = DoctorForm
     template_name = 'project/doctor_form.html'
@@ -309,7 +310,7 @@ class UpdateDoctorView(UpdateView):
 #endclass
 
 class CreateNurseView(CreateView):
-    """View for administrative staff to create new nurse records"""
+    """View to create new nurse records"""
     model = Nurse
     form_class = NurseForm
     template_name = 'project/nurse_form.html'
@@ -326,7 +327,7 @@ class CreateNurseView(CreateView):
 #endclass
 
 class UpdateNurseView(UpdateView):
-    """View for administrative staff to update existing nurse records"""
+    """View to update existing nurse records"""
     model = Nurse
     form_class = NurseForm
     template_name = 'project/nurse_form.html'
@@ -344,7 +345,7 @@ class UpdateNurseView(UpdateView):
 
 class CreateAppointmentView(CreateView):
     """
-    View for administrative staff to create new appointments.
+    View to create new appointments.
     """
     model = Appointment
     form_class = CreateAppointmentForm
@@ -523,7 +524,7 @@ class DayScheduleView(ListView):
             dateTime__day=d.day
         ).order_by('dateTime')
         
-        # Create a time slot structure (8 AM to 8 PM by default)
+        # Create a time slot structure 
         hours = range(0, 24)
         time_slots = []
         
